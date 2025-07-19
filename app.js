@@ -1,62 +1,112 @@
-// AI Presentation Interactive Application
+// Enhanced AI Presentation Interactive Application
 class AIPresentation {
     constructor() {
         this.currentSection = 0;
-        this.sections = ['hero', 'introduction', 'forecast', 'barriers', 'enablers', 'recommendations'];
+        this.sections = ['hero', 'adoption', 'maturity', 'sectors', 'timeline', 'barriers', 'enablers', 'recommendations', 'conclusion'];
         this.data = {
             adoption_growth: [
-                { year: 2022, percentage: 55 },
-                { year: 2023, percentage: 72 },
-                { year: 2024, percentage: 78 }
+                { year: '2023', percentage: 55 },
+                { year: '2024', percentage: 78 },
+                { year: '2025', percentage: 82 },
+                { year: '2026', percentage: 89 }
             ],
             maturity_split: [
-                { category: "AI Achievers", percentage: 12, color: "#1FB8CD" },
-                { category: "Progressing", percentage: 25, color: "#FFC185" },
-                { category: "Experimenters", percentage: 63, color: "#B4413C" }
+                { category: "AI Achievers", percentage: 12, color: "#2563eb", description: "Top performers with enterprise-wide AI integration" },
+                { category: "AI Builders", percentage: 25, color: "#1e40af", description: "Progressing with structured AI initiatives" },
+                { category: "AI Innovators", percentage: 13, color: "#f59e0b", description: "Experimental approach with pilot projects" },
+                { category: "AI Experimenters", percentage: 50, color: "#6b7280", description: "Testing waters with limited AI adoption" }
             ],
+            sector_adoption: [
+                { sector: "Technology", percentage: 85, color: "#2563eb" },
+                { sector: "Financial Services", percentage: 78, color: "#1e40af" },
+                { sector: "Healthcare", percentage: 68, color: "#f59e0b" },
+                { sector: "Manufacturing", percentage: 65, color: "#059669" },
+                { sector: "Retail", percentage: 62, color: "#dc2626" },
+                { sector: "Energy", percentage: 55, color: "#7c3aed" }
+            ],
+            timeline_data: {
+                current: {
+                    adoption: 78,
+                    achievers: 12,
+                    challenges: ["Data Strategy Issues", "Talent Gap", "Integration Complexity"]
+                },
+                "12months": {
+                    adoption: 85,
+                    achievers: 20,
+                    challenges: ["Scaling Challenges", "ROI Measurement", "Governance Issues"]
+                },
+                "24months": {
+                    adoption: 92,
+                    achievers: 27,
+                    challenges: ["Competitive Pressure", "Innovation Speed", "Digital Transformation"]
+                }
+            },
+            barriers: {
+                whereStall: [
+                    { name: "Data Strategy Issues", percentage: 46 },
+                    { name: "Poor Data Quality", percentage: 42 },
+                    { name: "Lack of Strategic Roadmap", percentage: 40 }
+                ],
+                whyStall: [
+                    { name: "Talent Gaps", percentage: 33 },
+                    { name: "Integration Pain", percentage: 30 },
+                    { name: "Unclear Value Cases", percentage: 28 }
+                ],
+                breakingThrough: [
+                    { name: "CEO Sponsorship", percentage: 83 },
+                    { name: "Responsible AI Framework", percentage: 53 },
+                    { name: "AI Core Platform", percentage: 32 }
+                ]
+            },
             enablers: [
-                { practice: "Track clear KPIs for every AI solution", impact: "Largest EBIT impact" },
-                { practice: "Defined scaling roadmap across BUs", impact: "Doubles chance of payoff" },
-                { practice: "C-suite governance (CEO directly oversees AI)", impact: "Strongest EBIT lever in large enterprises" },
-                { practice: "Workflow redesign not just app add-ons", impact: "47% more projects beat ROI targets" },
-                { practice: "Central-plus-hub talent model", impact: "Higher ROI and faster iteration" }
+                { name: "KPI Tracking", impact: 9, difficulty: 5, roi: "20% EBIT variance", color: "#2563eb" },
+                { name: "CEO Oversight", impact: 8, difficulty: 8, roi: "Highest at large enterprises", color: "#1e40af" },
+                { name: "Workflow Redesign", impact: 10, difficulty: 9, roi: "47% more ROI success", color: "#f59e0b" },
+                { name: "AI Core Platform", impact: 7, difficulty: 9, roi: "5x faster deployment", color: "#059669" },
+                { name: "Talent Investment", impact: 6, difficulty: 6, roi: "78% vs 51% training rate", color: "#dc2626" }
             ]
         };
-        
+
         this.init();
     }
 
     init() {
         this.setupThreeJS();
-        this.setupNavigation(); // Move this before other setups
+        this.setupNavigation();
         this.setupIntersectionObserver();
         this.setupAnimations();
         this.createVisualizations();
         this.setupInteractivity();
+        this.setupStartPresentation();
     }
 
-    // Navigation setup - Fixed version
+    setupStartPresentation() {
+        window.startPresentation = () => {
+            const adoptionSection = document.getElementById('adoption');
+            if (adoptionSection) {
+                adoptionSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+    }
+
     setupNavigation() {
-        // Add smooth scrolling behavior to html
         document.documentElement.style.scrollBehavior = 'smooth';
-        
+
         document.querySelectorAll('.nav__link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
-                
+
                 if (targetElement) {
-                    // Calculate offset to account for fixed nav
                     const navHeight = 80;
                     const targetPosition = targetElement.offsetTop - navHeight;
-                    
+
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
                     });
-                    
-                    // Update active state immediately
+
                     document.querySelectorAll('.nav__link').forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
                 }
@@ -67,26 +117,20 @@ class AIPresentation {
     // Three.js 3D Background
     setupThreeJS() {
         const container = document.getElementById('heroBackground');
-        
-        // Scene setup
+        if (!container) return;
+
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        
+
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0x000000, 0);
         container.appendChild(this.renderer.domElement);
 
-        // Create floating geometric shapes
         this.createFloatingShapes();
-        
-        // Camera position
         this.camera.position.z = 5;
-        
-        // Animation loop
         this.animateThreeJS();
-        
-        // Handle resize
+
         window.addEventListener('resize', () => this.onWindowResize());
     }
 
@@ -99,36 +143,33 @@ class AIPresentation {
             new THREE.TetrahedronGeometry(0.4)
         ];
 
-        const colors = [0x1FB8CD, 0xFFC185, 0xB4413C, 0x5D878F];
+        const colors = [0x2563eb, 0x1e40af, 0xf59e0b, 0x059669, 0xdc2626];
 
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 60; i++) {
             const geometry = geometries[Math.floor(Math.random() * geometries.length)];
             const material = new THREE.MeshBasicMaterial({
                 color: colors[Math.floor(Math.random() * colors.length)],
                 transparent: true,
-                opacity: 0.6,
-                wireframe: Math.random() > 0.5
+                opacity: 0.7,
+                wireframe: Math.random() > 0.6
             });
-            
+
             const mesh = new THREE.Mesh(geometry, material);
-            
-            // Random position
-            mesh.position.x = (Math.random() - 0.5) * 20;
-            mesh.position.y = (Math.random() - 0.5) * 20;
-            mesh.position.z = (Math.random() - 0.5) * 10;
-            
-            // Random rotation
+
+            mesh.position.x = (Math.random() - 0.5) * 25;
+            mesh.position.y = (Math.random() - 0.5) * 25;
+            mesh.position.z = (Math.random() - 0.5) * 15;
+
             mesh.rotation.x = Math.random() * 2 * Math.PI;
             mesh.rotation.y = Math.random() * 2 * Math.PI;
-            
-            // Store original position for animation
+
             mesh.userData.originalPosition = mesh.position.clone();
             mesh.userData.rotationSpeed = {
                 x: (Math.random() - 0.5) * 0.02,
                 y: (Math.random() - 0.5) * 0.02,
                 z: (Math.random() - 0.5) * 0.02
             };
-            
+
             this.scene.add(mesh);
             this.shapes.push(mesh);
         }
@@ -136,18 +177,16 @@ class AIPresentation {
 
     animateThreeJS() {
         requestAnimationFrame(() => this.animateThreeJS());
-        
-        // Animate shapes
+
         this.shapes.forEach(shape => {
             shape.rotation.x += shape.userData.rotationSpeed.x;
             shape.rotation.y += shape.userData.rotationSpeed.y;
             shape.rotation.z += shape.userData.rotationSpeed.z;
-            
-            // Floating motion
+
             const time = Date.now() * 0.001;
-            shape.position.y = shape.userData.originalPosition.y + Math.sin(time + shape.position.x) * 0.5;
+            shape.position.y = shape.userData.originalPosition.y + Math.sin(time + shape.position.x) * 0.8;
         });
-        
+
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -157,7 +196,6 @@ class AIPresentation {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    // Intersection Observer for scroll animations
     setupIntersectionObserver() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -168,22 +206,23 @@ class AIPresentation {
             });
         }, {
             threshold: 0.3,
-            rootMargin: '-80px 0px -80px 0px' // Account for fixed nav
+            rootMargin: '-80px 0px -80px 0px'
         });
 
-        // Observe all sections
         this.sections.forEach(sectionId => {
             const section = document.getElementById(sectionId);
             if (section) observer.observe(section);
         });
 
-        // Progress bar
         window.addEventListener('scroll', () => this.updateProgressBar());
     }
 
     updateProgressBar() {
         const scrolled = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        document.getElementById('navProgress').style.width = scrolled + '%';
+        const progressBar = document.getElementById('navProgress');
+        if (progressBar) {
+            progressBar.style.width = scrolled + '%';
+        }
     }
 
     updateNavigation(activeSection) {
@@ -194,7 +233,6 @@ class AIPresentation {
         }
     }
 
-    // Initial animations
     setupAnimations() {
         // Hero section animations
         anime.timeline()
@@ -214,13 +252,19 @@ class AIPresentation {
                 easing: 'easeOutExpo'
             }, '-=500')
             .add({
+                targets: '.start-presentation-btn',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                easing: 'easeOutExpo'
+            }, '-=300')
+            .add({
                 targets: '.hero__scroll-indicator',
                 opacity: [0, 1],
                 duration: 500,
                 easing: 'easeOutExpo'
-            }, '-=300');
+            }, '-=200');
 
-        // Counter animations for hero stats
         this.animateCounter('#adoptionStat', 78, 2000);
         this.animateCounter('#winningStat', 5, 2000, 500);
     }
@@ -232,27 +276,34 @@ class AIPresentation {
                 value: target,
                 duration: duration,
                 easing: 'easeOutExpo',
-                update: function(anim) {
-                    document.querySelector(selector).textContent = Math.round(anim.animatables[0].target.value) + '%';
+                update: function (anim) {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.textContent = Math.round(anim.animatables[0].target.value) + '%';
+                    }
                 }
             });
         }, delay);
     }
 
-    // Section animations
     animateSection(section) {
         const sectionId = section.id;
-        
-        // Only animate if not already animated
+
         if (section.dataset.animated) return;
         section.dataset.animated = 'true';
-        
-        switch(sectionId) {
-            case 'introduction':
-                this.animateIntroduction();
+
+        switch (sectionId) {
+            case 'adoption':
+                this.animateAdoption();
                 break;
-            case 'forecast':
-                this.animateForecast();
+            case 'maturity':
+                this.animateMaturity();
+                break;
+            case 'sectors':
+                this.animateSectors();
+                break;
+            case 'timeline':
+                this.animateTimeline();
                 break;
             case 'barriers':
                 this.animateBarriers();
@@ -263,12 +314,15 @@ class AIPresentation {
             case 'recommendations':
                 this.animateRecommendations();
                 break;
+            case 'conclusion':
+                this.animateConclusion();
+                break;
         }
     }
 
-    animateIntroduction() {
+    animateAdoption() {
         anime({
-            targets: '#introduction .section__title',
+            targets: '#adoption .section__title',
             opacity: [0, 1],
             translateY: [50, 0],
             duration: 800,
@@ -276,18 +330,18 @@ class AIPresentation {
         });
 
         anime({
-            targets: '#introduction .chart-container',
+            targets: '#adoption .chart-container',
             opacity: [0, 1],
             translateY: [50, 0],
-            delay: anime.stagger(200),
             duration: 1000,
+            delay: 200,
             easing: 'easeOutExpo'
         });
     }
 
-    animateForecast() {
+    animateMaturity() {
         anime({
-            targets: '#forecast .section__title',
+            targets: '#maturity .section__title',
             opacity: [0, 1],
             translateY: [50, 0],
             duration: 800,
@@ -295,29 +349,49 @@ class AIPresentation {
         });
 
         anime({
-            targets: '#forecast .stat-card',
+            targets: '#maturity .adoption-stat-large',
             opacity: [0, 1],
             scale: [0.9, 1],
-            delay: anime.stagger(100),
+            duration: 1000,
+            delay: 200,
+            easing: 'easeOutExpo'
+        });
+    }
+
+    animateSectors() {
+        anime({
+            targets: '#sectors .section__title',
+            opacity: [0, 1],
+            translateY: [50, 0],
             duration: 800,
-            easing: 'easeOutExpo',
-            complete: () => {
-                // Animate counters
-                this.animateCounter('#confidenceStat', 74, 1500);
-                this.animateCounter('#investmentStat', 30, 1500, 200);
-                setTimeout(() => {
-                    document.querySelector('#marketStat').textContent = '$252B';
-                    document.querySelector('#multiplierStat').textContent = '13×';
-                }, 400);
-            }
+            easing: 'easeOutExpo'
         });
 
         anime({
-            targets: '#forecast .timeline',
+            targets: '#sectors .chart-container',
+            opacity: [0, 1],
+            translateY: [50, 0],
+            duration: 1000,
+            delay: 200,
+            easing: 'easeOutExpo'
+        });
+    }
+
+    animateTimeline() {
+        anime({
+            targets: '#timeline .section__title',
+            opacity: [0, 1],
+            translateY: [50, 0],
+            duration: 800,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#timeline .interactive-timeline',
             opacity: [0, 1],
             translateY: [30, 0],
-            duration: 800,
-            delay: 600,
+            duration: 1000,
+            delay: 200,
             easing: 'easeOutExpo'
         });
     }
@@ -332,22 +406,12 @@ class AIPresentation {
         });
 
         anime({
-            targets: '#barriers .barrier-card',
+            targets: '#barriers .barrier-category',
             opacity: [0, 1],
-            translateX: [-50, 0],
+            translateX: [-30, 0],
             delay: anime.stagger(200),
             duration: 1000,
-            easing: 'easeOutExpo',
-            complete: () => {
-                // Animate progress bars
-                document.querySelectorAll('.progress-bar').forEach((bar, index) => {
-                    const percent = bar.getAttribute('data-percent');
-                    setTimeout(() => {
-                        bar.style.setProperty('--progress-width', percent + '%');
-                        bar.querySelector('::before') || bar.style.setProperty('width', percent + '%');
-                    }, index * 200);
-                });
-            }
+            easing: 'easeOutExpo'
         });
     }
 
@@ -361,11 +425,11 @@ class AIPresentation {
         });
 
         anime({
-            targets: '#enablers .enabler-item',
+            targets: '#enablers .chart-container',
             opacity: [0, 1],
-            scale: [0.9, 1],
-            delay: anime.stagger(100),
-            duration: 800,
+            translateY: [50, 0],
+            duration: 1000,
+            delay: 200,
             easing: 'easeOutExpo'
         });
     }
@@ -380,16 +444,53 @@ class AIPresentation {
         });
 
         anime({
-            targets: '#recommendations .action-card',
+            targets: '#recommendations .recommendation-card',
             opacity: [0, 1],
             translateY: [30, 0],
             delay: anime.stagger(100),
+            duration: 800,
+            easing: 'easeOutExpo',
+            complete: () => {
+                // Animate progress bars
+                document.querySelectorAll('.progress-fill').forEach((bar, index) => {
+                    const percent = bar.getAttribute('data-percent');
+                    setTimeout(() => {
+                        bar.style.width = percent + '%';
+                    }, index * 100);
+                });
+            }
+        });
+    }
+
+    animateConclusion() {
+        anime({
+            targets: '.urgency-number',
+            opacity: [0, 1],
+            scale: [0.8, 1],
+            duration: 1000,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.conclusion-title',
+            opacity: [0, 1],
+            translateY: [30, 0],
+            duration: 800,
+            delay: 200,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.takeaway',
+            opacity: [0, 1],
+            translateY: [30, 0],
+            delay: anime.stagger(100, 400),
             duration: 800,
             easing: 'easeOutExpo'
         });
 
         anime({
-            targets: '#recommendations .conclusion',
+            targets: '.citations',
             opacity: [0, 1],
             translateY: [30, 0],
             duration: 800,
@@ -398,25 +499,24 @@ class AIPresentation {
         });
     }
 
-    // D3.js Visualizations
     createVisualizations() {
-        // Wait for DOM to be ready and sections to be visible before creating charts
         setTimeout(() => {
-            this.createAdoptionChart();
-            this.createMaturityChart();
-            this.createTimeline();
-        }, 100);
+            this.createAdoptionAreaChart();
+            this.createSankeyChart();
+            this.createSectorChart();
+            this.createEnablersChart();
+        }, 500);
     }
 
-    createAdoptionChart() {
-        const container = d3.select('#adoptionChart');
+    createAdoptionAreaChart() {
+        const container = d3.select('#adoptionAreaChart');
         if (!container.node()) return;
-        
-        container.selectAll("*").remove(); // Clear any existing content
-        
-        const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-        const width = 350 - margin.left - margin.right;
-        const height = 250 - margin.top - margin.bottom;
+
+        container.selectAll("*").remove();
+
+        const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+        const width = 800 - margin.left - margin.right;
+        const height = 350 - margin.top - margin.bottom;
 
         const svg = container.append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -425,54 +525,118 @@ class AIPresentation {
         const g = svg.append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        const x = d3.scaleBand()
-            .domain(this.data.adoption_growth.map(d => d.year))
-            .range([0, width])
-            .padding(0.2);
+        const x = d3.scaleLinear()
+            .domain([2023, 2026])
+            .range([0, width]);
 
         const y = d3.scaleLinear()
             .domain([0, 100])
             .range([height, 0]);
 
-        // Add bars
-        g.selectAll('.bar')
-            .data(this.data.adoption_growth)
-            .enter().append('rect')
-            .attr('class', 'bar')
-            .attr('x', d => x(d.year))
-            .attr('width', x.bandwidth())
-            .attr('y', height)
-            .attr('height', 0)
-            .attr('fill', '#1FB8CD')
-            .attr('opacity', 0.8)
+        // Create gradient
+        const gradient = svg.append('defs')
+            .append('linearGradient')
+            .attr('id', 'area-gradient')
+            .attr('gradientUnits', 'userSpaceOnUse')
+            .attr('x1', 0).attr('y1', height)
+            .attr('x2', 0).attr('y2', 0);
+
+        gradient.append('stop')
+            .attr('offset', '0%')
+            .attr('stop-color', '#2563eb')
+            .attr('stop-opacity', 0.1);
+
+        gradient.append('stop')
+            .attr('offset', '100%')
+            .attr('stop-color', '#2563eb')
+            .attr('stop-opacity', 0.8);
+
+        // Define area
+        const area = d3.area()
+            .x(d => x(parseInt(d.year)))
+            .y0(height)
+            .y1(d => y(d.percentage))
+            .curve(d3.curveCardinal);
+
+        // Define line
+        const line = d3.line()
+            .x(d => x(parseInt(d.year)))
+            .y(d => y(d.percentage))
+            .curve(d3.curveCardinal);
+
+        // Add area
+        const areaPath = g.append('path')
+            .datum(this.data.adoption_growth)
+            .attr('fill', 'url(#area-gradient)')
+            .attr('d', area);
+
+        // Add line
+        const linePath = g.append('path')
+            .datum(this.data.adoption_growth)
+            .attr('fill', 'none')
+            .attr('stroke', '#2563eb')
+            .attr('stroke-width', 3)
+            .attr('d', line);
+
+        // Animate paths
+        const totalAreaLength = areaPath.node().getTotalLength();
+        const totalLineLength = linePath.node().getTotalLength();
+
+        areaPath
+            .attr('stroke-dasharray', totalAreaLength + ' ' + totalAreaLength)
+            .attr('stroke-dashoffset', totalAreaLength)
             .transition()
-            .delay((d, i) => i * 200)
-            .duration(1000)
-            .attr('y', d => y(d.percentage))
-            .attr('height', d => height - y(d.percentage));
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0);
+
+        linePath
+            .attr('stroke-dasharray', totalLineLength + ' ' + totalLineLength)
+            .attr('stroke-dashoffset', totalLineLength)
+            .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0);
+
+        // Add data points
+        g.selectAll('.data-point')
+            .data(this.data.adoption_growth)
+            .enter().append('circle')
+            .attr('class', 'data-point')
+            .attr('cx', d => x(parseInt(d.year)))
+            .attr('cy', d => y(d.percentage))
+            .attr('r', 6)
+            .attr('fill', '#2563eb')
+            .attr('stroke', 'white')
+            .attr('stroke-width', 2)
+            .style('opacity', 0)
+            .transition()
+            .delay(2000)
+            .duration(500)
+            .style('opacity', 1);
 
         // Add value labels
         g.selectAll('.value-label')
             .data(this.data.adoption_growth)
             .enter().append('text')
             .attr('class', 'value-label')
-            .attr('x', d => x(d.year) + x.bandwidth() / 2)
-            .attr('y', d => y(d.percentage) - 5)
+            .attr('x', d => x(parseInt(d.year)))
+            .attr('y', d => y(d.percentage) - 15)
             .attr('text-anchor', 'middle')
             .attr('fill', 'white')
             .attr('font-size', '14px')
             .attr('font-weight', 'bold')
             .text(d => d.percentage + '%')
-            .attr('opacity', 0)
+            .style('opacity', 0)
             .transition()
-            .delay((d, i) => i * 200 + 500)
+            .delay(2500)
             .duration(500)
-            .attr('opacity', 1);
+            .style('opacity', 1);
 
         // Add axes
         g.append('g')
             .attr('transform', `translate(0,${height})`)
-            .call(d3.axisBottom(x))
+            .call(d3.axisBottom(x).tickFormat(d3.format('d')))
             .selectAll('text, path, line')
             .attr('stroke', 'rgba(255,255,255,0.6)')
             .attr('fill', 'rgba(255,255,255,0.6)');
@@ -484,190 +648,416 @@ class AIPresentation {
             .attr('fill', 'rgba(255,255,255,0.6)');
     }
 
-    createMaturityChart() {
-        const container = d3.select('#maturityChart');
+    createSankeyChart() {
+        // This is a simplified sankey-style diagram
+        const container = d3.select('#sankeyChart');
         if (!container.node()) return;
-        
-        container.selectAll("*").remove(); // Clear any existing content
-        
-        const width = 350;
-        const height = 250;
-        const radius = Math.min(width, height) / 2 - 20;
+
+        container.selectAll("*").remove();
+
+        const width = 800;
+        const height = 400;
 
         const svg = container.append('svg')
             .attr('width', width)
             .attr('height', height);
+
+        const data = this.data.maturity_split;
+        const startX = 100;
+        const endX = 600;
+        const centerY = height / 2;
+
+        // Draw the 78% adoption circle
+        const mainCircle = svg.append('circle')
+            .attr('cx', startX)
+            .attr('cy', centerY)
+            .attr('r', 60)
+            .attr('fill', '#2563eb')
+            .attr('opacity', 0.8)
+            .attr('stroke', 'white')
+            .attr('stroke-width', 3);
+
+        svg.append('text')
+            .attr('x', startX)
+            .attr('y', centerY - 5)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'white')
+            .attr('font-size', '24px')
+            .attr('font-weight', 'bold')
+            .text('78%');
+
+        svg.append('text')
+            .attr('x', startX)
+            .attr('y', centerY + 15)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'white')
+            .attr('font-size', '12px')
+            .text('Total Adoption');
+
+        // Draw connections and maturity segments
+        const segmentHeight = 60;
+        let currentY = 50;
+
+        data.forEach((segment, i) => {
+            const segmentY = currentY + i * (segmentHeight + 20);
+
+            // Draw connection line
+            const connection = svg.append('path')
+                .attr('d', `M ${startX + 60} ${centerY} Q ${(startX + endX) / 2} ${segmentY + segmentHeight / 2} ${endX - 80} ${segmentY + segmentHeight / 2}`)
+                .attr('stroke', segment.color)
+                .attr('stroke-width', 3)
+                .attr('fill', 'none')
+                .attr('opacity', 0.7);
+
+            // Draw segment rectangle
+            const segmentRect = svg.append('rect')
+                .attr('x', endX - 80)
+                .attr('y', segmentY)
+                .attr('width', segment.percentage * 4)
+                .attr('height', segmentHeight)
+                .attr('fill', segment.color)
+                .attr('opacity', 0.8)
+                .attr('rx', 8);
+
+            // Add segment label
+            svg.append('text')
+                .attr('x', endX + 20)
+                .attr('y', segmentY + 20)
+                .attr('fill', 'white')
+                .attr('font-size', '14px')
+                .attr('font-weight', 'bold')
+                .text(segment.category);
+
+            svg.append('text')
+                .attr('x', endX + 20)
+                .attr('y', segmentY + 35)
+                .attr('fill', 'rgba(255,255,255,0.8)')
+                .attr('font-size', '12px')
+                .text(`${segment.percentage}%`);
+
+            svg.append('text')
+                .attr('x', endX + 20)
+                .attr('y', segmentY + 50)
+                .attr('fill', 'rgba(255,255,255,0.6)')
+                .attr('font-size', '10px')
+                .text(segment.description);
+        });
+    }
+
+    createSectorChart() {
+        const container = d3.select('#sectorChart');
+        if (!container.node()) return;
+
+        container.selectAll("*").remove();
+
+        const margin = { top: 20, right: 100, bottom: 40, left: 150 };
+        const width = 800 - margin.left - margin.right;
+        const height = 350 - margin.top - margin.bottom;
+
+        const svg = container.append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
         const g = svg.append('g')
-            .attr('transform', `translate(${width/2},${height/2})`);
+            .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        const pie = d3.pie()
-            .value(d => d.percentage)
-            .sort(null);
+        const x = d3.scaleLinear()
+            .domain([0, 100])
+            .range([0, width]);
 
-        const arc = d3.arc()
-            .innerRadius(60)
-            .outerRadius(radius);
+        const y = d3.scaleBand()
+            .domain(this.data.sector_adoption.map(d => d.sector))
+            .range([0, height])
+            .padding(0.2);
 
-        const arcs = g.selectAll('.arc')
-            .data(pie(this.data.maturity_split))
-            .enter().append('g')
-            .attr('class', 'arc');
-
-        // Add pie slices
-        arcs.append('path')
-            .attr('d', arc)
-            .attr('fill', d => d.data.color)
+        // Add bars
+        g.selectAll('.sector-bar')
+            .data(this.data.sector_adoption)
+            .enter().append('rect')
+            .attr('class', 'sector-bar')
+            .attr('x', 0)
+            .attr('y', d => y(d.sector))
+            .attr('width', 0)
+            .attr('height', y.bandwidth())
+            .attr('fill', d => d.color)
             .attr('opacity', 0.8)
-            .style('stroke', 'rgba(255,255,255,0.2)')
-            .style('stroke-width', '2px')
-            .each(function(d) {
-                this._current = { startAngle: 0, endAngle: 0 };
-            })
+            .style('cursor', 'pointer')
             .transition()
-            .duration(1000)
             .delay((d, i) => i * 200)
-            .attrTween('d', function(d) {
-                const interpolate = d3.interpolate(this._current, d);
-                this._current = interpolate(0);
-                return t => arc(interpolate(t));
-            });
+            .duration(1000)
+            .attr('width', d => x(d.percentage));
 
-        // Add labels
-        arcs.append('text')
-            .attr('transform', d => `translate(${arc.centroid(d)})`)
-            .attr('text-anchor', 'middle')
+        // Add value labels
+        g.selectAll('.sector-value')
+            .data(this.data.sector_adoption)
+            .enter().append('text')
+            .attr('class', 'sector-value')
+            .attr('x', d => x(d.percentage) + 10)
+            .attr('y', d => y(d.sector) + y.bandwidth() / 2 + 5)
             .attr('fill', 'white')
-            .attr('font-size', '12px')
+            .attr('font-size', '14px')
             .attr('font-weight', 'bold')
-            .text(d => d.data.percentage + '%')
-            .attr('opacity', 0)
+            .text(d => d.percentage + '%')
+            .style('opacity', 0)
             .transition()
-            .delay(1200)
+            .delay((d, i) => i * 200 + 500)
             .duration(500)
-            .attr('opacity', 1);
+            .style('opacity', 1);
 
-        // Add legend
-        const legend = svg.append('g')
-            .attr('transform', `translate(20, ${height - 80})`);
+        // Add y-axis
+        g.append('g')
+            .call(d3.axisLeft(y))
+            .selectAll('text')
+            .attr('fill', 'white')
+            .attr('font-size', '12px');
 
-        const legendItems = legend.selectAll('.legend-item')
-            .data(this.data.maturity_split)
-            .enter().append('g')
-            .attr('class', 'legend-item')
-            .attr('transform', (d, i) => `translate(0, ${i * 20})`);
+        g.selectAll('.domain, .tick line')
+            .attr('stroke', 'rgba(255,255,255,0.3)');
 
-        legendItems.append('rect')
-            .attr('width', 12)
-            .attr('height', 12)
-            .attr('fill', d => d.color);
-
-        legendItems.append('text')
-            .attr('x', 16)
-            .attr('y', 9)
-            .attr('font-size', '11px')
-            .attr('fill', 'rgba(255,255,255,0.8)')
-            .text(d => d.category);
+        // Add x-axis
+        g.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x).tickFormat(d => d + '%'))
+            .selectAll('text, path, line')
+            .attr('stroke', 'rgba(255,255,255,0.6)')
+            .attr('fill', 'rgba(255,255,255,0.6)');
     }
 
-    createTimeline() {
-        const container = d3.select('#timeline');
+    createEnablersChart() {
+        const container = d3.select('#enablersChart');
         if (!container.node()) return;
-        
-        container.selectAll("*").remove(); // Clear any existing content
-        
-        const containerRect = container.node().getBoundingClientRect();
-        const width = containerRect.width || 800;
-        const height = 200;
+
+        container.selectAll("*").remove();
+
+        const margin = { top: 40, right: 40, bottom: 60, left: 60 };
+        const width = 800 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
 
         const svg = container.append('svg')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
 
-        // Create a simple animated timeline visualization
-        const timelineData = [
-            { x: 0.1, label: 'Current State', color: '#B4413C' },
-            { x: 0.5, label: '12 Months', color: '#FFC185' },
-            { x: 0.9, label: '24 Months', color: '#1FB8CD' }
-        ];
+        const g = svg.append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        const timeline = svg.append('g')
-            .attr('transform', 'translate(50, 100)');
+        const x = d3.scaleLinear()
+            .domain([0, 10])
+            .range([0, width]);
 
-        // Timeline line
-        timeline.append('line')
-            .attr('x1', 0)
+        const y = d3.scaleLinear()
+            .domain([0, 10])
+            .range([height, 0]);
+
+        // Add grid
+        g.selectAll('.grid-line-x')
+            .data(x.ticks(10))
+            .enter().append('line')
+            .attr('class', 'grid-line-x')
+            .attr('x1', d => x(d))
+            .attr('x2', d => x(d))
             .attr('y1', 0)
-            .attr('x2', width - 100)
-            .attr('y2', 0)
-            .attr('stroke', 'rgba(255,255,255,0.3)')
-            .attr('stroke-width', 2)
-            .attr('stroke-dasharray', `0,${width - 100}`)
-            .transition()
-            .duration(2000)
-            .attr('stroke-dasharray', `${width - 100},0`);
+            .attr('y2', height)
+            .attr('stroke', 'rgba(255,255,255,0.1)');
 
-        // Timeline points
-        const points = timeline.selectAll('.timeline-point')
-            .data(timelineData)
+        g.selectAll('.grid-line-y')
+            .data(y.ticks(10))
+            .enter().append('line')
+            .attr('class', 'grid-line-y')
+            .attr('x1', 0)
+            .attr('x2', width)
+            .attr('y1', d => y(d))
+            .attr('y2', d => y(d))
+            .attr('stroke', 'rgba(255,255,255,0.1)');
+
+        // Add data points
+        const points = g.selectAll('.enabler-point')
+            .data(this.data.enablers)
             .enter().append('g')
-            .attr('class', 'timeline-point')
-            .attr('transform', d => `translate(${d.x * (width - 100)}, 0)`);
+            .attr('class', 'enabler-point')
+            .style('cursor', 'pointer');
 
         points.append('circle')
+            .attr('cx', d => x(d.difficulty))
+            .attr('cy', d => y(d.impact))
             .attr('r', 8)
             .attr('fill', d => d.color)
+            .attr('opacity', 0.8)
             .attr('stroke', 'white')
             .attr('stroke-width', 2)
-            .attr('opacity', 0)
+            .style('opacity', 0)
             .transition()
-            .delay((d, i) => 1000 + i * 300)
-            .duration(500)
-            .attr('opacity', 1);
+            .delay((d, i) => i * 200)
+            .duration(800)
+            .style('opacity', 1);
 
+        // Add labels
         points.append('text')
-            .attr('y', -15)
+            .attr('x', d => x(d.difficulty))
+            .attr('y', d => y(d.impact) - 15)
             .attr('text-anchor', 'middle')
             .attr('fill', 'white')
-            .attr('font-size', '12px')
+            .attr('font-size', '11px')
             .attr('font-weight', 'bold')
-            .text(d => d.label)
-            .attr('opacity', 0)
+            .text(d => d.name)
+            .style('opacity', 0)
             .transition()
-            .delay((d, i) => 1200 + i * 300)
+            .delay((d, i) => i * 200 + 400)
             .duration(500)
-            .attr('opacity', 1);
+            .style('opacity', 1);
+
+        // Add tooltip functionality
+        points.on('mouseover', function (event, d) {
+            const tooltip = d3.select('body').append('div')
+                .attr('class', 'tooltip')
+                .style('position', 'absolute')
+                .style('background', 'rgba(0,0,0,0.9)')
+                .style('color', 'white')
+                .style('padding', '10px')
+                .style('border-radius', '5px')
+                .style('font-size', '12px')
+                .style('pointer-events', 'none')
+                .style('opacity', 0);
+
+            tooltip.html(`
+                <strong>${d.name}</strong><br/>
+                Impact: ${d.impact}/10<br/>
+                Difficulty: ${d.difficulty}/10<br/>
+                ROI: ${d.roi}
+            `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px')
+                .transition()
+                .duration(200)
+                .style('opacity', 1);
+        })
+            .on('mouseout', function () {
+                d3.selectAll('.tooltip').remove();
+            });
+
+        // Add axes
+        g.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .selectAll('text, path, line')
+            .attr('stroke', 'rgba(255,255,255,0.6)')
+            .attr('fill', 'rgba(255,255,255,0.6)');
+
+        g.append('g')
+            .call(d3.axisLeft(y))
+            .selectAll('text, path, line')
+            .attr('stroke', 'rgba(255,255,255,0.6)')
+            .attr('fill', 'rgba(255,255,255,0.6)');
+
+        // Add axis labels
+        svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 20)
+            .attr('x', -height / 2 - margin.top)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'white')
+            .attr('font-size', '14px')
+            .text('ROI Impact (1-10)');
+
+        svg.append('text')
+            .attr('x', width / 2 + margin.left)
+            .attr('y', height + margin.top + 40)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'white')
+            .attr('font-size', '14px')
+            .text('Implementation Difficulty (1-10)');
     }
 
-    // Interactive features
     setupInteractivity() {
-        // Barrier cards interaction
-        document.querySelectorAll('.barrier-card').forEach((card, index) => {
-            card.addEventListener('mouseenter', () => {
+        // Maturity section interaction - Fixed
+        const exploreBtn = document.getElementById('exploreMaturity');
+        const closeBtn = document.getElementById('closeSankey');
+        const adoptionStatLarge = document.querySelector('.adoption-stat-large');
+        const sankeyContainer = document.getElementById('sankeyContainer');
+
+        if (exploreBtn && closeBtn && sankeyContainer && adoptionStatLarge) {
+            exploreBtn.addEventListener('click', () => {
+                adoptionStatLarge.style.display = 'none';
+                sankeyContainer.classList.remove('hidden');
+                sankeyContainer.style.display = 'block';
                 anime({
-                    targets: card,
-                    scale: 1.02,
-                    duration: 300,
+                    targets: sankeyContainer,
+                    opacity: [0, 1],
+                    translateY: [30, 0],
+                    duration: 500,
                     easing: 'easeOutExpo'
                 });
             });
 
-            card.addEventListener('mouseleave', () => {
+            closeBtn.addEventListener('click', () => {
+                sankeyContainer.classList.add('hidden');
+                sankeyContainer.style.display = 'none';
+                adoptionStatLarge.style.display = 'block';
                 anime({
-                    targets: card,
-                    scale: 1,
-                    duration: 300,
+                    targets: adoptionStatLarge,
+                    opacity: [0, 1],
+                    scale: [0.9, 1],
+                    duration: 500,
                     easing: 'easeOutExpo'
                 });
+            });
+        }
+
+        // Timeline interaction
+        const timelineButtons = document.querySelectorAll('.timeline-btn');
+        timelineButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const period = btn.dataset.period;
+                this.updateTimelineContent(period);
+
+                timelineButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
             });
         });
 
-        // Action cards interaction
-        document.querySelectorAll('.action-card').forEach(card => {
+        // Barriers interaction
+        document.querySelectorAll('.barrier-category').forEach(category => {
+            const header = category.querySelector('.barrier-header');
+            const content = category.querySelector('.barrier-content');
+            const icon = category.querySelector('.expand-icon');
+
+            header.addEventListener('click', () => {
+                const isExpanded = category.classList.contains('expanded');
+
+                // Close all other categories
+                document.querySelectorAll('.barrier-category').forEach(cat => {
+                    if (cat !== category) {
+                        cat.classList.remove('expanded');
+                        cat.querySelector('.barrier-content').classList.add('hidden');
+                        cat.querySelector('.expand-icon').textContent = '+';
+                    }
+                });
+
+                if (isExpanded) {
+                    category.classList.remove('expanded');
+                    content.classList.add('hidden');
+                    icon.textContent = '+';
+                } else {
+                    category.classList.add('expanded');
+                    content.classList.remove('hidden');
+                    icon.textContent = '×';
+
+                    // Animate barrier bars
+                    setTimeout(() => {
+                        content.querySelectorAll('.barrier-fill').forEach(fill => {
+                            const percent = fill.getAttribute('data-percent');
+                            fill.style.width = percent + '%';
+                        });
+                    }, 200);
+                }
+            });
+        });
+
+        // Recommendation cards interaction
+        document.querySelectorAll('.recommendation-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
                 anime({
                     targets: card,
-                    translateY: -5,
+                    translateY: -8,
                     scale: 1.02,
                     duration: 300,
                     easing: 'easeOutExpo'
@@ -684,27 +1074,48 @@ class AIPresentation {
                 });
             });
         });
+    }
 
-        // Enabler items interaction
-        document.querySelectorAll('.enabler-item').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                anime({
-                    targets: item,
-                    scale: 1.05,
-                    duration: 300,
-                    easing: 'easeOutExpo'
-                });
-            });
+    updateTimelineContent(period) {
+        const data = this.data.timeline_data[period];
 
-            item.addEventListener('mouseleave', () => {
+        if (data) {
+            // Update stats with animation
+            this.animateCounter('#timelineAdoption', data.adoption, 1000);
+            this.animateCounter('#timelineAchievers', data.achievers, 1000, 200);
+
+            // Update challenges list
+            const challengesList = document.getElementById('challengesList');
+            if (challengesList) {
+                // Fade out current content
                 anime({
-                    targets: item,
-                    scale: 1,
+                    targets: challengesList.children,
+                    opacity: 0,
+                    translateX: -20,
                     duration: 300,
-                    easing: 'easeOutExpo'
+                    complete: () => {
+                        challengesList.innerHTML = '';
+                        data.challenges.forEach((challenge, index) => {
+                            const li = document.createElement('li');
+                            li.textContent = challenge;
+                            li.style.opacity = '0';
+                            li.style.transform = 'translateX(20px)';
+                            challengesList.appendChild(li);
+                        });
+
+                        // Fade in new content
+                        anime({
+                            targets: challengesList.children,
+                            opacity: [0, 1],
+                            translateX: [20, 0],
+                            delay: anime.stagger(100),
+                            duration: 400,
+                            easing: 'easeOutExpo'
+                        });
+                    }
                 });
-            });
-        });
+            }
+        }
     }
 }
 

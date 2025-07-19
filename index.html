@@ -14,112 +14,208 @@
     <nav class="nav">
         <div class="nav__progress" id="navProgress"></div>
         <div class="nav__links">
-            <a href="#hero" class="nav__link active">Paradox</a>
-            <a href="#introduction" class="nav__link">Boom</a>
-            <a href="#forecast" class="nav__link">Forecast</a>
+            <a href="#hero" class="nav__link active">Start</a>
+            <a href="#adoption" class="nav__link">Growth</a>
+            <a href="#maturity" class="nav__link">Maturity</a>
+            <a href="#sectors" class="nav__link">Sectors</a>
+            <a href="#timeline" class="nav__link">Timeline</a>
             <a href="#barriers" class="nav__link">Barriers</a>
             <a href="#enablers" class="nav__link">Enablers</a>
             <a href="#recommendations" class="nav__link">Actions</a>
+            <a href="#conclusion" class="nav__link">Conclusion</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero">
+    <section id="hero" class="hero section-snap">
         <div id="heroBackground" class="hero__background"></div>
         <div class="hero__content">
             <h1 class="hero__title">
                 <span class="hero__title-line">Why <span class="hero__stat" id="adoptionStat">78%</span> are doing AI</span>
                 <span class="hero__title-line">but only <span class="hero__stat hero__stat--accent" id="winningStat">5%</span> are Winning</span>
             </h1>
-            <div class="hero__subtitle">The AI Paradox</div>
+            <div class="hero__subtitle">The Strategic Divide in Enterprise AI Adoption</div>
+            <button class="btn btn--primary btn--lg start-presentation-btn" onclick="startPresentation()">
+                START PRESENTATION
+            </button>
         </div>
         <div class="hero__scroll-indicator">
             <div class="scroll-arrow"></div>
         </div>
     </section>
 
-    <!-- Introduction Section -->
-    <section id="introduction" class="section">
+    <!-- AI Adoption Growth Section -->
+    <section id="adoption" class="section section-snap">
         <div class="container">
-            <h2 class="section__title">The Adoption Boom but Shrinking Winner's Circle</h2>
-            <div class="section__grid">
-                <div class="chart-container">
-                    <h3>AI Adoption Growth</h3>
-                    <div id="adoptionChart" class="chart"></div>
+            <h2 class="section__title">AI Adoption Growth</h2>
+            <div class="chart-container">
+                <div id="adoptionAreaChart" class="chart"></div>
+                <div class="chart-insight">
+                    <p><strong>Explosive Growth:</strong> From 55% in 2023 to 78% in 2024</p>
+                    <p>Projected to reach 89% by 2026</p>
                 </div>
-                <div class="chart-container">
-                    <h3>AI Maturity Split</h3>
-                    <div id="maturityChart" class="chart"></div>
-                    <div class="chart-insight">
-                        <p><strong>AI Achievers</strong> see 50% higher pre-pandemic revenue growth</p>
-                        <p>3.5× more likely to derive >30% revenue from AI</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Maturity Breakdown Section -->
+    <section id="maturity" class="section section-snap">
+        <div class="container">
+            <h2 class="section__title">AI Maturity Breakdown</h2>
+            <div class="maturity-container">
+                <div class="adoption-stat-large" id="adoptionStatLarge">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">Total Adoption</div>
+                    <button class="btn btn--secondary explore-btn" id="exploreMaturity">Explore Maturity Split</button>
+                </div>
+                <div id="sankeyContainer" class="sankey-container hidden">
+                    <div id="sankeyChart" class="chart"></div>
+                    <button class="btn btn--outline close-btn" id="closeSankey">Back to Overview</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sector Adoption Section -->
+    <section id="sectors" class="section section-snap">
+        <div class="container">
+            <h2 class="section__title">Sector Adoption Landscape</h2>
+            <div class="chart-container">
+                <div id="sectorChart" class="chart"></div>
+                <div class="chart-insight">
+                    <p><strong>Technology leads the way</strong> at 85%+ adoption</p>
+                    <p>Click any sector to see maturity breakdown</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Timeline Section -->
+    <section id="timeline" class="section section-snap section--dark">
+        <div class="container">
+            <h2 class="section__title">The Next 24 Months Will Decide</h2>
+            <div class="interactive-timeline">
+                <div class="timeline-nav">
+                    <button class="timeline-btn active" data-period="current">Current State</button>
+                    <button class="timeline-btn" data-period="12months">12 Months</button>
+                    <button class="timeline-btn" data-period="24months">24 Months</button>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-stats" id="timelineStats">
+                        <div class="timeline-stat">
+                            <div class="timeline-stat-number" id="timelineAdoption">78%</div>
+                            <div class="timeline-stat-label">Adoption Rate</div>
+                        </div>
+                        <div class="timeline-stat">
+                            <div class="timeline-stat-number" id="timelineAchievers">12%</div>
+                            <div class="timeline-stat-label">AI Achievers</div>
+                        </div>
+                    </div>
+                    <div class="timeline-challenges" id="timelineChallenges">
+                        <h3>Key Challenges</h3>
+                        <ul id="challengesList">
+                            <li>Data Strategy Issues</li>
+                            <li>Talent Gap</li>
+                            <li>Integration Complexity</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Forecast Section -->
-    <section id="forecast" class="section section--dark">
-        <div class="container">
-            <h2 class="section__title">24 Months to Separate Leaders from Laggards</h2>
-            <div class="forecast__stats">
-                <div class="stat-card">
-                    <div class="stat-card__number" id="confidenceStat">74%</div>
-                    <div class="stat-card__label">Executive Confidence in AI ROI</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__number" id="investmentStat">30%</div>
-                    <div class="stat-card__label">YoY Investment Growth</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__number" id="marketStat">$252B</div>
-                    <div class="stat-card__label">Market Spend in 2024</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__number" id="multiplierStat">13×</div>
-                    <div class="stat-card__label">Rise in a Decade</div>
-                </div>
-            </div>
-            <div class="timeline" id="timeline"></div>
-        </div>
-    </section>
-
-    <!-- Barriers Section -->
-    <section id="barriers" class="section">
+    <!-- Breaking Down Barriers Section -->
+    <section id="barriers" class="section section-snap">
         <div class="container">
             <h2 class="section__title">Breaking Down Barriers</h2>
-            <div class="barriers">
-                <div class="barrier-card" data-barrier="0">
-                    <h3>Scaling beyond POCs</h3>
-                    <div class="barrier-progress">
-                        <div class="progress-bar" data-percent="46"></div>
-                        <span>46% lack strategic roadmap</span>
+            <div class="barriers-interactive">
+                <div class="barrier-category" data-category="whereStall">
+                    <div class="barrier-header">
+                        <h3>Where Companies Stall</h3>
+                        <div class="expand-icon">+</div>
                     </div>
-                    <div class="barrier-details">
-                        <p><strong>Why:</strong> Weak data strategy (42%), talent gaps (33%)</p>
-                        <p><strong>Solution:</strong> Robust enterprise data foundation</p>
+                    <div class="barrier-content hidden">
+                        <div class="barrier-item">
+                            <span class="barrier-label">Data Strategy Issues</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="46"></div>
+                                <span class="barrier-percent">46%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">Poor Data Quality</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="42"></div>
+                                <span class="barrier-percent">42%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">Lack of Strategic Roadmap</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="40"></div>
+                                <span class="barrier-percent">40%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="barrier-card" data-barrier="1">
-                    <h3>Embedding AI into workflows</h3>
-                    <div class="barrier-progress">
-                        <div class="progress-bar" data-percent="30"></div>
-                        <span>30% face legacy integration pain</span>
+
+                <div class="barrier-category" data-category="whyStall">
+                    <div class="barrier-header">
+                        <h3>Why They Stall</h3>
+                        <div class="expand-icon">+</div>
                     </div>
-                    <div class="barrier-details">
-                        <p><strong>Why:</strong> Unclear value cases</p>
-                        <p><strong>Solution:</strong> Senior sponsorship & bold strategy</p>
+                    <div class="barrier-content hidden">
+                        <div class="barrier-item">
+                            <span class="barrier-label">Talent Gaps</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="33"></div>
+                                <span class="barrier-percent">33%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">Integration Pain</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="30"></div>
+                                <span class="barrier-percent">30%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">Unclear Value Cases</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="28"></div>
+                                <span class="barrier-percent">28%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="barrier-card" data-barrier="2">
-                    <h3>Trust & responsible use</h3>
-                    <div class="barrier-progress">
-                        <div class="progress-bar" data-percent="6"></div>
-                        <span>Only 6% have mature Responsible-AI programs</span>
+
+                <div class="barrier-category" data-category="breakingThrough">
+                    <div class="barrier-header">
+                        <h3>Breaking Through</h3>
+                        <div class="expand-icon">+</div>
                     </div>
-                    <div class="barrier-details">
-                        <p><strong>Solution:</strong> Responsible-AI guardrails baked in early</p>
+                    <div class="barrier-content hidden">
+                        <div class="barrier-item">
+                            <span class="barrier-label">CEO Sponsorship</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="83"></div>
+                                <span class="barrier-percent">83%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">Responsible AI Framework</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="53"></div>
+                                <span class="barrier-percent">53%</span>
+                            </div>
+                        </div>
+                        <div class="barrier-item">
+                            <span class="barrier-label">AI Core Platform</span>
+                            <div class="barrier-bar">
+                                <div class="barrier-fill" data-percent="32"></div>
+                                <span class="barrier-percent">32%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,45 +223,201 @@
     </section>
 
     <!-- Enablers Section -->
-    <section id="enablers" class="section section--dark">
+    <section id="enablers" class="section section-snap section--dark">
         <div class="container">
-            <h2 class="section__title">Enablers that Correlate with Higher ROI</h2>
-            <div class="enablers" id="enablersNetwork">
-                <div class="enabler-item" data-impact="Largest EBIT impact">
-                    <h3>Track clear KPIs for every AI solution</h3>
-                </div>
-                <div class="enabler-item" data-impact="Doubles chance of payoff">
-                    <h3>Defined scaling roadmap across BUs</h3>
-                </div>
-                <div class="enabler-item" data-impact="Strongest EBIT lever in large enterprises">
-                    <h3>C-suite governance (CEO directly oversees AI)</h3>
-                </div>
-                <div class="enabler-item" data-impact="47% more projects beat ROI targets">
-                    <h3>Workflow redesign not just app add-ons</h3>
-                </div>
-                <div class="enabler-item" data-impact="Higher ROI and faster iteration">
-                    <h3>Central-plus-hub talent model</h3>
+            <h2 class="section__title">Enablers: Lever vs ROI Impact</h2>
+            <div class="chart-container">
+                <div id="enablersChart" class="chart"></div>
+                <div class="chart-insight">
+                    <p><strong>Implementation Difficulty vs ROI Impact</strong></p>
+                    <p>Hover over points to see detailed ROI metrics</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Recommendations Section -->
-    <section id="recommendations" class="section">
+    <!-- Enhanced Recommendations Section -->
+    <section id="recommendations" class="section section-snap">
         <div class="container">
             <h2 class="section__title">Moving the 78% into the Winner's Circle</h2>
-            <div class="recommendations">
-                <div class="action-card">Start with business value families, not one-off use cases</div>
-                <div class="action-card">Rip out integration bottlenecks early</div>
-                <div class="action-card">Shift from effort-based to outcome-based partner models</div>
-                <div class="action-card">Institutionalise Responsible-AI</div>
-                <div class="action-card">Upskill for blended business + technical fluency</div>
-                <div class="action-card">Measure, publish and celebrate ROI wins</div>
+            <div class="recommendations-grid">
+                <div class="recommendation-card" data-rec="0">
+                    <div class="rec-header">
+                        <h3>Focus on Value Families</h3>
+                        <div class="rec-impact">3x faster scale</div>
+                    </div>
+                    <p>Group related use cases around shared data/models</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">3-6 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="85"></div>
+                                <span class="progress-text">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" data-rec="1">
+                    <div class="rec-header">
+                        <h3>Fund Data Platform Debt</h3>
+                        <div class="rec-impact">34% board-level capex</div>
+                    </div>
+                    <p>Ring-fence capital for unified feature store</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">6-12 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="75"></div>
+                                <span class="progress-text">75%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" data-rec="2">
+                    <div class="rec-header">
+                        <h3>Outcome-Based Partnerships</h3>
+                        <div class="rec-impact">80% demand such terms</div>
+                    </div>
+                    <p>Move from time-materials to performance contracts</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">2-4 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="90"></div>
+                                <span class="progress-text">90%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" data-rec="3">
+                    <div class="rec-header">
+                        <h3>Institutionalize Responsible AI</h3>
+                        <div class="rec-impact">30% lower costs</div>
+                    </div>
+                    <p>Cross-functional council with model cards</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">4-8 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="70"></div>
+                                <span class="progress-text">70%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" data-rec="4">
+                    <div class="rec-header">
+                        <h3>Scale AI Fluency</h3>
+                        <div class="rec-impact">78% vs 51% rate</div>
+                    </div>
+                    <p>Enterprise-wide AI training programs</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">6-18 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="80"></div>
+                                <span class="progress-text">80%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" data-rec="5">
+                    <div class="rec-header">
+                        <h3>Measure and Celebrate Wins</h3>
+                        <div class="rec-impact">Faster than slide decks</div>
+                    </div>
+                    <p>Public ROI scoreboards change culture</p>
+                    <div class="rec-metrics">
+                        <div class="rec-metric">
+                            <span class="metric-label">Timeline</span>
+                            <span class="metric-value">1-3 months</span>
+                        </div>
+                        <div class="rec-metric">
+                            <span class="metric-label">Success Rate</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill" data-percent="95"></div>
+                                <span class="progress-text">95%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="conclusion">
-                <blockquote>
-                    AI adoption is now table-stakes, but real competitive advantage accrues to the 5–12% of organizations that treat AI as a CEO-level, end-to-end transformation.
-                </blockquote>
+        </div>
+    </section>
+
+    <!-- Compelling Conclusion Section -->
+    <section id="conclusion" class="section section-snap section--dark">
+        <div class="container">
+            <div class="conclusion-content">
+                <div class="urgency-stat">
+                    <div class="urgency-number" id="urgencyCounter">24</div>
+                    <div class="urgency-label">Months Will Decide</div>
+                </div>
+                
+                <h2 class="conclusion-title">AI Maturity is the New Competitive Divide</h2>
+                
+                <div class="key-takeaways">
+                    <div class="takeaway">
+                        <div class="takeaway-stat">$109.1B</div>
+                        <div class="takeaway-label">US AI Investment vs $9.3B China</div>
+                    </div>
+                    <div class="takeaway">
+                        <div class="takeaway-stat">13% → 31%</div>
+                        <div class="takeaway-label">ROI Improvement with GenAI</div>
+                    </div>
+                    <div class="takeaway">
+                        <div class="takeaway-stat">27%</div>
+                        <div class="takeaway-label">Will be AI Achievers by 2026</div>
+                    </div>
+                </div>
+
+                <div class="cta-section">
+                    <div class="qr-placeholder">
+                        <div class="qr-code">QR CODE</div>
+                        <p>Scan for Full Report</p>
+                    </div>
+                    <div class="cta-buttons">
+                        <button class="btn btn--primary btn--lg">Download Full Report</button>
+                        <button class="btn btn--outline btn--lg">Share Insights</button>
+                    </div>
+                </div>
+
+                <div class="citations">
+                    <h3>Sources & References</h3>
+                    <div class="citations-grid">
+                        <div class="citation">Accenture: Art of AI Maturity</div>
+                        <div class="citation">Genpact: The GenAI Countdown</div>
+                        <div class="citation">Stanford HAI: AI Index Report</div>
+                        <div class="citation">IBM: The Ingenuity of GenAI</div>
+                        <div class="citation">McKinsey: The State of AI</div>
+                        <div class="citation">Protiviti: AI Pulse 2025</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
