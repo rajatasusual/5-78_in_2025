@@ -1,42 +1,42 @@
 // Data from the provided JSON
 const data = {
     adoption_growth: [
-        {"year": 2022, "percentage": 35, "type": "historical", "source": "Stanford AI Index"},
-        {"year": 2023, "percentage": 55, "type": "historical", "source": "McKinsey State of AI"},
-        {"year": 2024, "percentage": 78, "type": "current", "source": "McKinsey State of AI 2024"},
-        {"year": 2025, "percentage": 85, "type": "projected", "source": "Trend Analysis"},
-        {"year": 2026, "percentage": 92, "type": "projected", "source": "Trend Analysis"}
+        { "year": 2022, "percentage": 35, "type": "historical", "source": "Stanford AI Index" },
+        { "year": 2023, "percentage": 55, "type": "historical", "source": "McKinsey State of AI" },
+        { "year": 2024, "percentage": 78, "type": "current", "source": "McKinsey State of AI 2024" },
+        { "year": 2025, "percentage": 85, "type": "projected", "source": "Trend Analysis" },
+        { "year": 2026, "percentage": 92, "type": "projected", "source": "Trend Analysis" }
     ],
     maturity_split: [
-        {"category": "Mature GenAI Initiatives", "percentage": 5, "color": "#2563eb", "description": "Only 5% have mature GenAI programs"},
-        {"category": "Basic AI Implementation", "percentage": 25, "color": "#1e40af", "description": "Basic AI tools and processes"},
-        {"category": "Experimentation Phase", "percentage": 70, "color": "#6b7280", "description": "Still testing and experimenting"}
+        { "category": "Mature GenAI Initiatives", "percentage": 5, "color": "#e7e247", "description": "Only 5% have mature GenAI programs" },
+        { "category": "Basic AI Implementation", "percentage": 25, "color": "#2563eb", "description": "Basic AI tools and processes" },
+        { "category": "Experimentation Phase", "percentage": 70, "color": "#6b7280", "description": "Still testing and experimenting" }
     ],
     sector_adoption: [
-        {"sector": "Technology", "adoption": 88, "maturity": 41, "color": "#2563eb", "gap": 47},
-        {"sector": "Financial Services", "adoption": 65, "maturity": 1, "color": "#1e40af", "gap": 64},
-        {"sector": "Healthcare", "adoption": 63, "maturity": 3, "color": "#059669", "gap": 60},
-        {"sector": "Manufacturing", "adoption": 59, "maturity": 9, "color": "#dc2626", "gap": 50}
+        { "sector": "Technology", "adoption": 88, "maturity": 41, "color": "#2563eb", "gap": 47 },
+        { "sector": "Financial Services", "adoption": 65, "maturity": 1, "color": "#1e40af", "gap": 64 },
+        { "sector": "Healthcare", "adoption": 63, "maturity": 3, "color": "#059669", "gap": 60 },
+        { "sector": "Manufacturing", "adoption": 59, "maturity": 9, "color": "#dc2626", "gap": 50 }
     ],
     timeline_data: {
-        "current": {"adoption": 78, "achievers": 5, "challenges": ["Data Quality Issues (46%)", "Talent Scarcity (33%)", "Strategic Planning Gaps"]},
-        "12months": {"adoption": 85, "achievers": 12, "challenges": ["Scaling Challenges", "ROI Measurement", "Integration Complexity"]},
-        "24months": {"adoption": 92, "achievers": 27, "challenges": ["Competitive Differentiation", "Innovation Speed", "Governance Maturity"]}
+        "current": { "adoption": 78, "achievers": 5, "challenges": ["Data Quality Issues (46%)", "Talent Scarcity (33%)", "Strategic Planning Gaps"] },
+        "12months": { "adoption": 85, "achievers": 12, "challenges": ["Scaling Challenges", "ROI Measurement", "Integration Complexity"] },
+        "24months": { "adoption": 92, "achievers": 27, "challenges": ["Competitive Differentiation", "Innovation Speed", "Governance Maturity"] }
     },
     // Complete Research-Based Impact Matrix data
     impact_matrix: {
         maturity_stages: ["Experimenting", "Developing", "Scaling", "Leading"],
         impact_metrics: [
-            {"metric": "Satisfaction Rate", "experimenting": 45, "developing": 65, "scaling": 80, "leading": 95},
-            {"metric": "ROI Achievement", "experimenting": 25, "developing": 45, "scaling": 65, "leading": 75},
-            {"metric": "Value Creation", "experimenting": 30, "developing": 50, "scaling": 70, "leading": 85},
-            {"metric": "Strategic Alignment", "experimenting": 35, "developing": 55, "scaling": 75, "leading": 90}
+            { "metric": "Satisfaction Rate", "experimenting": 45, "developing": 65, "scaling": 80, "leading": 95 },
+            { "metric": "ROI Achievement", "experimenting": 25, "developing": 45, "scaling": 65, "leading": 75 },
+            { "metric": "Value Creation", "experimenting": 30, "developing": 50, "scaling": 70, "leading": 85 },
+            { "metric": "Strategic Alignment", "experimenting": 35, "developing": 55, "scaling": 75, "leading": 90 }
         ]
     },
     conclusion_stats: [
-        {"value": "$109.1B", "label": "US AI Investment in 2024", "source": "Stanford AI Index 2025", "color": "#2563eb"},
-        {"value": "95%", "label": "High Satisfaction at Highest AI Maturity", "source": "Protiviti AI Pulse Survey 2024", "color": "#2563eb"},
-        {"value": "75%", "label": "Exceed ROI Expectations at Highest Maturity", "source": "Protiviti AI Pulse Survey 2024", "color": "#2563eb"}
+        { "value": "$109.1B", "label": "US AI Investment in 2024", "source": "Stanford AI Index 2025", "color": "#2563eb" },
+        { "value": "95%", "label": "High Satisfaction at Highest AI Maturity", "source": "Protiviti AI Pulse Survey 2024", "color": "#2563eb" },
+        { "value": "75%", "label": "Exceed ROI Expectations at Highest Maturity", "source": "Protiviti AI Pulse Survey 2024", "color": "#2563eb" }
     ]
 };
 
@@ -45,9 +45,9 @@ let scene, camera, renderer, particleSystem, lines;
 let animationId;
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM loaded, initializing app...');
-    
+
     // Add a small delay to ensure all resources are loaded
     setTimeout(() => {
         initThreeJsBackground();
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initThreeJsBackground() {
     try {
         console.log('Initializing Three.js background...');
-        
+
         const canvas = document.getElementById('background-canvas');
         if (!canvas) {
             console.error('Canvas element not found');
@@ -74,7 +74,7 @@ function initThreeJsBackground() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0x000000, 0);
 
@@ -154,7 +154,7 @@ function initThreeJsBackground() {
             }
 
             particleSystem.geometry.attributes.position.needsUpdate = true;
-            
+
             // Update connections
             updateConnections();
 
@@ -168,7 +168,7 @@ function initThreeJsBackground() {
         function updateConnections() {
             const linePositions = [];
             const pos = particleSystem.geometry.attributes.position.array;
-            
+
             for (let i = 0; i < particleCount; i++) {
                 for (let j = i + 1; j < particleCount; j++) {
                     const dx = pos[i * 3] - pos[j * 3];
@@ -197,18 +197,18 @@ function initThreeJsBackground() {
 // CRITICAL: Navigation functionality with snap scroll support and fix for Home button
 function initNavigation() {
     console.log('Initializing navigation...');
-    
+
     const navLinks = document.querySelectorAll('.nav-menu a');
     const sections = document.querySelectorAll('.section');
     const progressFill = document.querySelector('.progress-fill');
 
     // Smooth scroll and active link management
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             console.log('Navigation clicked, target:', targetId);
-            
+
             // CRITICAL FIX: Ensure home button goes to hero section
             if (targetId === 'hero') {
                 scrollToSection('hero');
@@ -226,7 +226,7 @@ function initNavigation() {
                 const scrollTop = window.pageYOffset;
                 const windowHeight = window.innerHeight;
                 const documentHeight = document.documentElement.scrollHeight;
-                
+
                 // Update progress bar
                 const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
                 if (progressFill) {
@@ -236,12 +236,12 @@ function initNavigation() {
                 // Update active nav link with better detection
                 let activeSection = null;
                 let closestDistance = Infinity;
-                
+
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop - 150; // Account for nav height
                     const sectionBottom = sectionTop + section.offsetHeight;
                     const distance = Math.abs(scrollTop - sectionTop);
-                    
+
                     if (scrollTop >= sectionTop && scrollTop < sectionBottom && distance < closestDistance) {
                         activeSection = section.id;
                         closestDistance = distance;
@@ -260,12 +260,12 @@ function initNavigation() {
                         foundSection = true;
                     }
                 });
-                
-                if(foundSection) {
+
+                if (foundSection) {
                     if (previousLink) {
                         previousLink.classList.remove('active');
                     }
-                } 
+                }
                 ticking = false;
             });
             ticking = true;
@@ -279,19 +279,19 @@ function initNavigation() {
 // Initialize all charts using D3.js
 function initCharts() {
     console.log('Initializing charts...');
-    
+
     // Wait for D3 to be available
     if (typeof d3 === 'undefined') {
         console.error('D3.js not loaded');
         setTimeout(initCharts, 500);
         return;
     }
-    
+
     createGrowthChart();
     createMaturityChart();
     createSectorChart();
     createImpactMatrixChart();
-    
+
     console.log('Charts initialized');
 }
 
@@ -418,7 +418,7 @@ function createMaturityChart() {
 
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-            const margin = { top: 20, right: 30, bottom: 60, left: 120 };
+            const margin = { top: 20, right: 120, bottom: 30, left: 120 };
             const containerWidth = container.node().getBoundingClientRect().width;
             const width = Math.max(containerWidth - margin.left - margin.right, 300);
             const height = 300;
@@ -428,7 +428,7 @@ function createMaturityChart() {
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', `translate(${width/2},${height/2})`);
+                .attr('transform', `translate(${width / 2},${height / 2})`);
 
             const pie = d3.pie()
                 .value(d => d.percentage)
@@ -449,10 +449,10 @@ function createMaturityChart() {
                 .attr('stroke', '#000000')
                 .attr('stroke-width', 2)
                 .style('opacity', 0.8)
-                .on('mouseover', function() {
+                .on('mouseover', function () {
                     d3.select(this).style('opacity', 1);
                 })
-                .on('mouseout', function() {
+                .on('mouseout', function () {
                     d3.select(this).style('opacity', 0.8);
                 });
 
@@ -486,7 +486,7 @@ function createMaturityChart() {
 function createSectorChart() {
     const container = d3.select('#sector-chart');
     if (container.empty()) return;
-    
+
     const observer = new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
             createSectorChartInternal(container);
@@ -499,7 +499,7 @@ function createSectorChart() {
 
 function createSectorChartInternal(container) {
     container.selectAll('*').remove();
-    
+
     const margin = { top: 20, right: 30, bottom: 60, left: 120 };
     const containerWidth = container.node().getBoundingClientRect().width;
     const width = Math.max(containerWidth - margin.left - margin.right, 300);
@@ -531,13 +531,13 @@ function createSectorChartInternal(container) {
         .attr('height', y.bandwidth() / 2)
         .attr('fill', '#2563eb')
         .style('cursor', 'pointer')
-        .on('mouseover', function(event, d) {
+        .on('mouseover', function (event, d) {
             d3.select(this).style('opacity', 0.8);
         })
-        .on('mouseout', function(event, d) {
+        .on('mouseout', function (event, d) {
             d3.select(this).style('opacity', 1);
         })
-        .on('click', function(event, d) {
+        .on('click', function (event, d) {
             console.log('Adoption bar clicked for:', d.sector);
             showSectorModal(d);
         })
@@ -557,13 +557,13 @@ function createSectorChartInternal(container) {
         .attr('height', y.bandwidth() / 2)
         .attr('fill', '#e7e247')
         .style('cursor', 'pointer')
-        .on('mouseover', function(event, d) {
+        .on('mouseover', function (event, d) {
             d3.select(this).style('opacity', 0.8);
         })
-        .on('mouseout', function(event, d) {
+        .on('mouseout', function (event, d) {
             d3.select(this).style('opacity', 1);
         })
-        .on('click', function(event, d) {
+        .on('click', function (event, d) {
             console.log('Maturity bar clicked for:', d.sector);
             showSectorModal(d);
         })
@@ -585,7 +585,7 @@ function createSectorChartInternal(container) {
         .style('font-size', '14px')
         .style('cursor', 'pointer')
         .text(d => d.sector)
-        .on('click', function(event, d) {
+        .on('click', function (event, d) {
             console.log('Sector label clicked for:', d.sector);
             showSectorModal(d);
         });
@@ -623,15 +623,23 @@ function createSectorChartInternal(container) {
 
 // CRITICAL: Complete Research-Based Impact Matrix
 function createImpactMatrixChart() {
+    function isMobile() {
+        return window.innerWidth < 600;
+    }
+
     const container = d3.select('#impact-matrix-chart');
     if (container.empty()) return;
-    
+
     container.selectAll('*').remove();
-    
-    const margin = { top: 50, right: 30, bottom: 60, left: 150 };
+
+    const isMobileView = isMobile();
+
+    const margin = { top: 40, right: 30, bottom: 50, left: isMobileView ? 0 : 150 };
     const containerWidth = container.node().getBoundingClientRect().width;
-    const width = Math.max(containerWidth - margin.left - margin.right, 400);
-    const height = 400 - margin.top - margin.bottom;
+    const width = Math.max(containerWidth - margin.left - margin.right, 300);
+    const height = isMobileView
+        ? data.impact_matrix.impact_metrics.length * 150
+        : 400 - margin.top - margin.bottom;
 
     const svg = container.append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -639,122 +647,127 @@ function createImpactMatrixChart() {
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const colors = ['#2563eb', '#2563eb50', '#e7e24750', '#e7e247'];
+    const colors = ['#2563eb', '#2563eb90', '#e7e24790', '#e7e247'];
     const stages = data.impact_matrix.maturity_stages;
     const metrics = data.impact_matrix.impact_metrics;
 
-    const x = d3.scaleBand()
-        .domain(stages)
-        .range([0, width])
-        .padding(0.1);
+    if (isMobileView) {
+        // MOBILE-FRIENDLY STACKED BARS
+        metrics.forEach((metric, i) => {
+            const yOffset = i * 120;
+            svg.append('text')
+                .attr('x', 0)
+                .attr('y', yOffset - 15)
+                .text(metric.metric)
+                .style('fill', '#ffffff')
+                .style('font-size', '13px')
+                .style('font-weight', 'bold');
 
-    const y = d3.scaleBand()
-        .domain(metrics.map(d => d.metric))
-        .range([0, height])
-        .padding(0.1);
+            const x = d3.scaleLinear()
+                .domain([0, 100])
+                .range([0, width]);
 
-    // Create cells for each metric and stage
-    metrics.forEach((metric, metricIndex) => {
-        stages.forEach((stage, stageIndex) => {
-            const value = metric[stage.toLowerCase()];
-            const cellHeight = Math.max((value / 100) * y.bandwidth(), 5);
-            
-            svg.append('rect')
-                .attr('x', x(stage))
-                .attr('y', y(metric.metric) + (y.bandwidth() - cellHeight))
-                .attr('width', x.bandwidth())
-                .attr('height', cellHeight)
-                .attr('fill', colors[stageIndex])
-                .attr('opacity', 0.8)
-                .on('mouseover', function(event) {
-                    d3.select(this).attr('opacity', 1);
-                    
-                    // Create tooltip
-                    const tooltip = svg.append('g')
-                        .attr('id', 'matrix-tooltip')
-                        .attr('transform', `translate(${x(stage) + x.bandwidth()/2}, ${y(metric.metric) - 10})`);
-                    
-                    const tooltipBg = tooltip.append('rect')
-                        .attr('width', 100)
-                        .attr('height', 30)
-                        .attr('x', -50)
-                        .attr('y', -25)
-                        .attr('fill', '#000000')
-                        .attr('stroke', '#ffffff')
-                        .attr('opacity', 0.9)
-                        .attr('rx', 5);
-                    
-                    tooltip.append('text')
-                        .attr('text-anchor', 'middle')
-                        .attr('y', -10)
-                        .style('fill', '#ffffff')
-                        .style('font-size', '12px')
-                        .style('font-weight', 'bold')
-                        .text(`${value}%`);
-                })
-                .on('mouseout', function() {
-                    d3.select(this).attr('opacity', 0.8);
-                    svg.select('#matrix-tooltip').remove();
-                });
+            stages.forEach((stage, j) => {
+                const value = metric[stage.toLowerCase()];
+                svg.append('rect')
+                    .attr('x', 0)
+                    .attr('y', yOffset + j * 20)
+                    .attr('width', x(value))
+                    .attr('height', 16)
+                    .attr('fill', colors[j])
+                    .attr('rx', 3);
 
-            // Add value labels for larger cells
-            if (cellHeight > 20) {
                 svg.append('text')
-                    .attr('x', x(stage) + x.bandwidth()/2)
-                    .attr('y', y(metric.metric) + y.bandwidth() - cellHeight/2)
-                    .attr('text-anchor', 'middle')
-                    .attr('dy', '0.35em')
+                    .attr('x', x(value) + 5)
+                    .attr('y', yOffset + j * 20 + 12)
                     .style('fill', '#ffffff')
                     .style('font-size', '11px')
-                    .style('font-weight', 'bold')
-                    .text(value + '%');
-            }
+                    .text(`${stage}: ${value}%`);
+            });
         });
-    });
+    } else {
+        // ORIGINAL DESKTOP MATRIX
+        const x = d3.scaleBand()
+            .domain(stages)
+            .range([0, width])
+            .padding(0.1);
 
-    // Add Y axis (metrics)
-    svg.append('g')
-        .selectAll('text')
-        .data(metrics)
-        .enter().append('text')
-        .attr('x', -10)
-        .attr('y', d => y(d.metric) + y.bandwidth()/2)
-        .attr('text-anchor', 'end')
-        .attr('dy', '0.35em')
-        .style('fill', '#ffffff')
-        .style('font-size', '13px')
-        .text(d => d.metric);
+        const y = d3.scaleBand()
+            .domain(metrics.map(d => d.metric))
+            .range([0, height])
+            .padding(0.1);
 
-    // Add X axis (stages)
-    svg.append('g')
-        .attr('transform', `translate(0, ${height + 10})`)
-        .selectAll('text')
-        .data(stages)
-        .enter().append('text')
-        .attr('x', d => x(d) + x.bandwidth()/2)
-        .attr('text-anchor', 'middle')
-        .style('fill', '#ffffff')
-        .style('font-size', '13px')
-        .text(d => d);
+        metrics.forEach((metric, metricIndex) => {
+            stages.forEach((stage, stageIndex) => {
+                const value = metric[stage.toLowerCase()];
+                const cellHeight = Math.max((value / 100) * y.bandwidth(), 5);
+
+                svg.append('rect')
+                    .attr('x', x(stage))
+                    .attr('y', y(metric.metric) + (y.bandwidth() - cellHeight))
+                    .attr('width', x.bandwidth())
+                    .attr('height', cellHeight)
+                    .attr('fill', colors[stageIndex])
+                    .attr('opacity', 0.8)
+                    .on('click', () => alert(`${metric.metric} - ${stage}: ${value}%`)); // tap-friendly
+
+                if (cellHeight > 20) {
+                    svg.append('text')
+                        .attr('x', x(stage) + x.bandwidth() / 2)
+                        .attr('y', y(metric.metric) + y.bandwidth() - cellHeight / 2)
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .style('fill', '#ffffff')
+                        .style('font-size', '11px')
+                        .style('font-weight', 'bold')
+                        .text(value + '%');
+                }
+            });
+        });
+
+        // Axes
+        svg.append('g')
+            .selectAll('text')
+            .data(metrics)
+            .enter().append('text')
+            .attr('x', -10)
+            .attr('y', d => y(d.metric) + y.bandwidth() / 2)
+            .attr('text-anchor', 'end')
+            .attr('dy', '0.35em')
+            .style('fill', '#ffffff')
+            .style('font-size', '13px')
+            .text(d => d.metric);
+
+        svg.append('g')
+            .attr('transform', `translate(0, ${height + 10})`)
+            .selectAll('text')
+            .data(stages)
+            .enter().append('text')
+            .attr('x', d => x(d) + x.bandwidth() / 2)
+            .attr('text-anchor', 'middle')
+            .style('fill', '#ffffff')
+            .style('font-size', '13px')
+            .text(d => d);
+    }
 }
 
 // Initialize interactive elements
 function initInteractiveElements() {
     console.log('Initializing interactive elements...');
-    
+
     initTimelineControls();
     initEnablerFilters();
     initModal();
-    
+
     // Initialize CTA button
     const ctaButton = document.querySelector('.cta-button');
     if (ctaButton) {
-        ctaButton.addEventListener('click', function(e) {
+        ctaButton.addEventListener('click', function (e) {
             e.preventDefault();
             scrollToSection('growth');
         });
     }
-    
+
     console.log('Interactive elements initialized');
 }
 
@@ -771,7 +784,7 @@ function initTimelineControls() {
     }
 
     timelineButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             // Remove active class from all buttons
             timelineButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
@@ -807,7 +820,7 @@ function initEnablerFilters() {
     }
 
     filterButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             // Remove active class from all buttons
             filterButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
@@ -817,7 +830,7 @@ function initEnablerFilters() {
             enablerCards.forEach(card => {
                 const cardCategory = card.getAttribute('data-category');
                 card.classList.remove('faded');
-                
+
                 if (filter === 'all') {
                     // Show all cards highlighted
                     card.classList.remove('faded');
@@ -845,12 +858,12 @@ function initModal() {
         return;
     }
 
-    closeBtn.addEventListener('click', function() {
+    closeBtn.addEventListener('click', function () {
         console.log('Modal close button clicked');
         modal.style.display = 'none';
     });
 
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
         if (event.target === modal) {
             console.log('Modal background clicked');
             modal.style.display = 'none';
@@ -864,7 +877,7 @@ function initModal() {
 
 function showSectorModal(sectorData) {
     console.log('Showing modal for sector:', sectorData.sector);
-    
+
     const modal = document.getElementById('sector-modal');
     const title = document.getElementById('modal-sector-title');
     const adoption = document.getElementById('modal-adoption');
@@ -881,7 +894,7 @@ function showSectorModal(sectorData) {
     adoption.textContent = sectorData.adoption + '%';
     maturity.textContent = sectorData.maturity + '%';
     gap.textContent = sectorData.gap + '%';
-    
+
     // Add sector-specific descriptions
     const descriptions = {
         'Technology': 'Technology sector leads in AI adoption but faces challenges in achieving full maturity across all initiatives.',
@@ -889,9 +902,9 @@ function showSectorModal(sectorData) {
         'Healthcare': 'Healthcare demonstrates moderate adoption with significant maturity gaps due to data privacy concerns.',
         'Manufacturing': 'Manufacturing shows steady adoption with growing maturity as AI integrates with operational processes.'
     };
-    
+
     description.textContent = descriptions[sectorData.sector] || 'Sector-specific AI implementation details.';
-    
+
     // Show the modal
     modal.style.display = 'block';
     console.log('Modal displayed successfully');
@@ -901,25 +914,25 @@ function showSectorModal(sectorData) {
 function initShareButton() {
     const shareBtn = document.getElementById('share-insights-btn');
     const toast = document.getElementById('toast-notification');
-    
+
     if (!shareBtn || !toast) {
         console.warn('Share button or toast not found');
         return;
     }
 
-    shareBtn.addEventListener('click', function() {
+    shareBtn.addEventListener('click', function () {
         console.log('Share button clicked');
         const shareText = `AI Maturity Gap Alert: 78% adoption vs only 5% mature implementations. The 24-month window to join the 27% AI Achievers is closing. Key insight: 95% satisfaction at highest AI maturity levels. #AITransformation #DigitalLeadership ${window.location.href}`;
-        
+
         // Copy to clipboard
-        navigator.clipboard.writeText(shareText).then(function() {
+        navigator.clipboard.writeText(shareText).then(function () {
             console.log('Text copied to clipboard successfully');
             // Show toast notification
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.error('Failed to copy text: ', err);
             // Fallback for older browsers
             const textArea = document.createElement('textarea');
@@ -952,7 +965,7 @@ function initAnimations() {
 function initHeroAnimations() {
     const heroStats = document.querySelectorAll('.hero-stat');
 
-    if ( !heroStats.length) {
+    if (!heroStats.length) {
         console.warn('Hero section or stat numbers not found');
         return;
     }
@@ -961,7 +974,7 @@ function initHeroAnimations() {
         const target = parseInt(number.getAttribute('data-target'));
         animateNumber(number, 0, target, 2000);
     })
-    
+
 }
 
 
@@ -992,12 +1005,12 @@ function initCounterAnimation() {
 // Scroll-based animations
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.insight-item, .maturity-item, .barrier-item, .stall-item, .enabler-card, .stat-card, .source-item');
-    
+
     if (!animatedElements.length) {
         console.warn('No animated elements found');
         return;
     }
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1023,10 +1036,10 @@ function animateNumber(element, start, end, duration) {
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const current = Math.round(start + difference * easeOutQuart);
-        
+
         element.textContent = current;
 
         if (progress < 1) {
@@ -1043,12 +1056,12 @@ function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         // Use more aggressive scrolling options to ensure snap behavior works
-        section.scrollIntoView({ 
+        section.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
             inline: 'nearest'
         });
-        
+
         // Fallback for better snap behavior
         setTimeout(() => {
             const elementTop = section.offsetTop - 70; // Account for nav height
@@ -1063,14 +1076,14 @@ function scrollToSection(sectionId) {
 }
 
 // Handle window resize for charts and Three.js
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     // Resize Three.js renderer
     if (renderer && camera) {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
-    
+
     // Recreate charts with new dimensions
     setTimeout(() => {
         if (typeof d3 !== 'undefined') {
@@ -1083,7 +1096,7 @@ window.addEventListener('resize', function() {
 });
 
 // Clean up on page unload
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', function () {
     if (animationId) {
         cancelAnimationFrame(animationId);
     }
