@@ -1,9 +1,3 @@
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxP.ttf') format('truetype');
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -14,11 +8,6 @@
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
@@ -180,6 +169,76 @@ main {
   width: 100%;
 }
 
+/* Tooltip */
+.tooltip-trigger {
+  cursor: pointer;
+}
+
+.tooltip-icon {
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.4rem;
+  color: #e7e247;
+  cursor: pointer;
+  animation: neon-pulse 5s infinite;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.tooltip-trigger:hover .tooltip-icon {
+  transform: scale(1.2);
+}
+
+.tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 0.75rem;
+    white-space: normal;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    width: 80%;
+}
+
+.tooltip-trigger:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.neon .tooltip {
+  background: rgba(20, 20, 40, 0.9);
+  box-shadow: 0 0 20px #e7e24720;
+  border: 1px solid #e7e247;
+}
+
+.neon-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px #2563eb;
+  animation: neon-pulse 5s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
 /* Hero Section */
 .hero-section {
   text-align: center;
@@ -270,7 +329,6 @@ main {
   background: rgba(37, 99, 235, 0.05);
   border: 1px solid rgba(37, 99, 235, 0.2);
   border-radius: 20px;
-  padding: 2rem;
   margin: 2rem 0;
   backdrop-filter: blur(10px);
 }
@@ -342,6 +400,7 @@ main {
   color: #2563eb;
   margin-bottom: 0.5rem;
 }
+
 .maturity-item:last-child .maturity-percent {
   font-size: 3rem;
   font-weight: 800;
@@ -591,7 +650,7 @@ main {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
@@ -616,13 +675,13 @@ main {
 .enablers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .enabler-card {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
-  padding: 2rem;
+  padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -684,7 +743,7 @@ main {
 }
 
 .enabler-metric {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #e7e247;
   margin-bottom: 1rem;
@@ -719,14 +778,14 @@ main {
 }
 
 .conclusion-subtitle {
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #e7e247;
   margin-bottom: 3rem;
   font-weight: 500;
 }
 
 .conclusion-counter {
-  margin: 3rem 0;
+  margin: 1.5rem 0;
 }
 
 .counter-number {
@@ -759,7 +818,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin: 4rem 0;
+  margin: 2rem 0;
 }
 
 .stat-card {
@@ -798,13 +857,13 @@ main {
 
 /* QR Code */
 .qr-code {
-  margin-top: 4rem;
+  margin-top: 2rem;
   text-align: center;
 }
 
 .qr-code img {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
 
 }
 
@@ -821,14 +880,14 @@ main {
 .sources-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .source-item {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 15px;
-  padding: 2rem;
+  padding: 1rem;
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -846,7 +905,7 @@ main {
 
 .source-item p {
   color: #cccccc;
-  line-height: 1.5;
+  line-height: 1;
 }
 
 /* Toast Notification */
@@ -1002,7 +1061,7 @@ main {
   #maturity-chart,
   #sector-chart,
   #impact-matrix-chart {
-     height: 100%;
+    height: 100%;
   }
 
   .nav-menu {

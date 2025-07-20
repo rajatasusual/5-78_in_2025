@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         initInteractiveElements();
         initAnimations();
         initShareButton();
+        initTooltips();
         initCounterAnimation();
     }, 100);
 });
@@ -520,7 +521,7 @@ function createSectorChartInternal(container) {
         // --- MOBILE: VERTICAL BAR CHART ---
         const x = d3.scaleBand()
             .domain(sectorData.map(d => d.sector))
-            .range([0, width- margin.left - margin.right])
+            .range([0, width - margin.left - margin.right])
             .padding(0.3);
 
         const y = d3.scaleLinear()
@@ -729,7 +730,7 @@ function createImpactMatrixChart() {
                 svg.append('rect')
                     .attr('x', 0)
                     .attr('y', yOffset + j * 20)
-                    .attr('width', x(value -20))
+                    .attr('width', x(value - 20))
                     .attr('height', 16)
                     .attr('fill', colors[j])
                     .attr('rx', 3);
@@ -1015,6 +1016,15 @@ function initShareButton() {
     });
 }
 
+function initTooltips() {
+    const tooltips = document.querySelectorAll('.tooltip');
+
+    tooltips.forEach(tooltip => {
+        tooltip.addEventListener('click', function () {
+            this.style.display = this.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+}
 // Initialize animations
 function initAnimations() {
     console.log('Initializing animations...');
@@ -1136,6 +1146,16 @@ function scrollToSection(sectionId) {
     }
 }
 
+function toggleTooltip(element) {
+    let tooltip = element.nextElementSibling;
+    while (tooltip && !tooltip.classList.contains('tooltip')) {
+        tooltip = tooltip.nextElementSibling;
+    }
+    if (tooltip) {
+        tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
+    }
+}
+
 function isMobile() {
     return window.innerWidth < 600;
 }
@@ -1165,5 +1185,4 @@ window.addEventListener('beforeunload', function () {
     if (animationId) {
         cancelAnimationFrame(animationId);
     }
-    d3.selectAll('.chart-tooltip').remove();
 });
