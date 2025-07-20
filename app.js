@@ -298,24 +298,24 @@ function initCharts() {
 // Growth chart with D3.js
 function createGrowthChart() {
     const container = d3.select('#growth-chart');
-    if (container.empty()) return;
+    if (container.empty() || !container.select('svg').empty()) return;
 
     container.selectAll('*').remove();
 
-    const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+    const margin = { top: 20, right: 20, bottom: 40, left: 30 };
     const containerWidth = container.node().getBoundingClientRect().width;
-    const width = Math.max(containerWidth - margin.left - margin.right, 300);
+    const width = isMobile() ? containerWidth : Math.max(containerWidth, 300);
     const height = 400 - margin.top - margin.bottom;
 
     const svg = container.append('svg')
-        .attr('width', width + margin.left + margin.right)
+        .attr('width', width)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
     const x = d3.scaleLinear()
         .domain(d3.extent(data.adoption_growth, d => d.year))
-        .range([0, width]);
+        .range([0, width - margin.left - margin.right]);
 
     const y = d3.scaleLinear()
         .domain([0, 100])
@@ -413,10 +413,10 @@ function createGrowthChart() {
 // Maturity breakdown chart
 function createMaturityChart() {
     const container = d3.select('#maturity-chart');
-    if (container.empty()) return;
-    if (!container.select('svg').empty()) return;
 
     const observer = new IntersectionObserver((entries) => {
+        if (container.empty() || !container.select('svg').empty()) return;
+
         if (entries[0].isIntersecting) {
             const margin = { top: 0, right: 120, bottom: 0, left: 120 };
             const containerWidth = container.node().getBoundingClientRect().width;
@@ -428,7 +428,7 @@ function createMaturityChart() {
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', isMobile() ? `translate(${(width / 2) - 10},${height / 2})` : `translate(${(width / 2) + radius},${height / 2})`);
+                .attr('transform', isMobile() ? `translate(${(width / 2) - 10},${height / 2})` : `translate(${(width / 2)},${height / 2})`);
 
             const pie = d3.pie()
                 .value(d => d.percentage)
@@ -485,7 +485,7 @@ function createMaturityChart() {
 // CRITICAL: Sector analysis chart with working modal functionality
 function createSectorChart() {
     const container = d3.select('#sector-chart');
-    if (container.empty()) return;
+    if (container.empty() || !container.select('svg').empty()) return;
 
     const observer = new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
@@ -496,11 +496,14 @@ function createSectorChart() {
 
     observer.observe(container.node());
 }
-
 function createSectorChartInternal(container) {
+    if (container.empty() || !container.select('svg').empty()) return;
+
     container.selectAll('*').remove();
 
-    const margin = { top: 20, right: 30, bottom: 60, left: 120 };
+    const isMobileView = isMobile();
+
+    const margin = { top: 20, right: 30, bottom: isMobileView ? 100 : 60, left: isMobileView ? 40 : 120 };
     const containerWidth = container.node().getBoundingClientRect().width;
     const width = Math.max(containerWidth - margin.left - margin.right, 300);
     const height = 400 - margin.top - margin.bottom;
@@ -511,114 +514,171 @@ function createSectorChartInternal(container) {
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleLinear()
-        .domain([0, 100])
-        .range([0, width]);
+    const sectorData = data.sector_adoption;
 
-    const y = d3.scaleBand()
-        .domain(data.sector_adoption.map(d => d.sector))
-        .range([0, height])
-        .padding(0.2);
+    if (isMobileView) {
+        // --- MOBILE: VERTICAL BAR CHART ---
+        const x = d3.scaleBand()
+            .domain(sectorData.map(d => d.sector))
+            .range([0, width- margin.left - margin.right])
+            .padding(0.3);
 
-    // Add adoption bars with proper click handlers
-    svg.selectAll('.adoption-bar')
-        .data(data.sector_adoption)
-        .enter().append('rect')
-        .attr('class', 'adoption-bar')
-        .attr('x', 0)
-        .attr('y', d => y(d.sector))
-        .attr('width', 0)
-        .attr('height', y.bandwidth() / 2)
-        .attr('fill', '#2563eb')
-        .style('cursor', 'pointer')
-        .on('mouseover', function (event, d) {
-            d3.select(this).style('opacity', 0.8);
-        })
-        .on('mouseout', function (event, d) {
-            d3.select(this).style('opacity', 1);
-        })
-        .on('click', function (event, d) {
-            console.log('Adoption bar clicked for:', d.sector);
-            showSectorModal(d);
-        })
-        .transition()
-        .delay((d, i) => i * 50)
-        .duration(500)
-        .attr('width', d => x(d.adoption));
+        const y = d3.scaleLinear()
+            .domain([0, 100])
+            .range([height, 0]);
 
-    // Add maturity bars with proper click handlers
-    svg.selectAll('.maturity-bar')
-        .data(data.sector_adoption)
-        .enter().append('rect')
-        .attr('class', 'maturity-bar')
-        .attr('x', 0)
-        .attr('y', d => y(d.sector) + y.bandwidth() / 2)
-        .attr('width', 0)
-        .attr('height', y.bandwidth() / 2)
-        .attr('fill', '#e7e247')
-        .style('cursor', 'pointer')
-        .on('mouseover', function (event, d) {
-            d3.select(this).style('opacity', 0.8);
-        })
-        .on('mouseout', function (event, d) {
-            d3.select(this).style('opacity', 1);
-        })
-        .on('click', function (event, d) {
-            console.log('Maturity bar clicked for:', d.sector);
-            showSectorModal(d);
-        })
-        .transition()
-        .delay((d, i) => i * 50)
-        .duration(500)
-        .attr('width', d => x(d.maturity));
+        // Adoption bars
+        svg.selectAll('.adoption-bar')
+            .data(sectorData)
+            .enter().append('rect')
+            .attr('class', 'adoption-bar')
+            .attr('x', d => x(d.sector))
+            .attr('y', y(0))
+            .attr('width', x.bandwidth() / 2)
+            .attr('height', 0)
+            .attr('fill', '#2563eb')
+            .on('click', (_, d) => showSectorModal(d))
+            .transition()
+            .duration(600)
+            .attr('y', d => y(d.adoption))
+            .attr('height', d => y(0) - y(d.adoption));
 
-    // Add sector labels with click functionality
-    svg.selectAll('.sector-label')
-        .data(data.sector_adoption)
-        .enter().append('text')
-        .attr('class', 'sector-label')
-        .attr('x', -10)
-        .attr('y', d => y(d.sector) + y.bandwidth() / 2)
-        .attr('dy', '0.35em')
-        .attr('text-anchor', 'end')
-        .style('fill', '#ffffff')
-        .style('font-size', '14px')
-        .style('cursor', 'pointer')
-        .text(d => d.sector)
-        .on('click', function (event, d) {
-            console.log('Sector label clicked for:', d.sector);
-            showSectorModal(d);
-        });
+        // Maturity bars
+        svg.selectAll('.maturity-bar')
+            .data(sectorData)
+            .enter().append('rect')
+            .attr('class', 'maturity-bar')
+            .attr('x', d => x(d.sector) + x.bandwidth() / 2)
+            .attr('y', y(0))
+            .attr('width', x.bandwidth() / 2)
+            .attr('height', 0)
+            .attr('fill', '#e7e247')
+            .on('click', (_, d) => showSectorModal(d))
+            .transition()
+            .duration(600)
+            .attr('y', d => y(d.maturity))
+            .attr('height', d => y(0) - y(d.maturity));
 
-    // Add value labels
-    svg.selectAll('.adoption-label')
-        .data(data.sector_adoption)
-        .enter().append('text')
-        .attr('x', d => x(d.adoption) + 5)
-        .attr('y', d => y(d.sector) + y.bandwidth() / 4)
-        .attr('dy', '0.35em')
-        .style('fill', '#ffffff')
-        .style('font-size', '12px')
-        .style('font-weight', 'bold')
-        .text(d => d.adoption + '%');
+        // Value labels
+        svg.selectAll('.adoption-label')
+            .data(sectorData)
+            .enter().append('text')
+            .attr('x', d => x(d.sector) + x.bandwidth() / 4)
+            .attr('y', d => y(d.adoption) - 5)
+            .attr('text-anchor', 'middle')
+            .style('font-size', '11px')
+            .style('fill', '#ffffff')
+            .text(d => d.adoption + '%');
 
-    svg.selectAll('.maturity-label')
-        .data(data.sector_adoption)
-        .enter().append('text')
-        .attr('x', d => x(d.maturity) + 5)
-        .attr('y', d => y(d.sector) + 3 * y.bandwidth() / 4)
-        .attr('dy', '0.35em')
-        .style('fill', '#000000')
-        .style('font-size', '12px')
-        .style('font-weight', 'bold')
-        .text(d => d.maturity + '%');
+        svg.selectAll('.maturity-label')
+            .data(sectorData)
+            .enter().append('text')
+            .attr('x', d => x(d.sector) + 3 * x.bandwidth() / 4)
+            .attr('y', d => y(d.maturity) - 5)
+            .attr('text-anchor', 'middle')
+            .style('font-size', '11px')
+            .style('fill', '#000000')
+            .text(d => d.maturity + '%');
 
-    // Add axes
-    svg.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d => d + '%'))
-        .selectAll('text')
-        .style('fill', '#cccccc');
+        // X Axis with rotated labels
+        svg.append('g')
+            .attr('transform', `translate(0, ${height})`)
+            .call(d3.axisBottom(x))
+            .selectAll('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('text-anchor', 'end')
+            .attr('x', -5)
+            .attr('y', -2)
+            .style('font-size', '11px')
+            .style('fill', '#cccccc');
+
+        // Y Axis
+        svg.append('g')
+            .call(d3.axisLeft(y).ticks(5).tickFormat(d => d + '%'))
+            .selectAll('text')
+            .style('fill', '#cccccc');
+
+    } else {
+        // --- DESKTOP: HORIZONTAL BAR CHART ---
+        const x = d3.scaleLinear()
+            .domain([0, 100])
+            .range([0, width - margin.left - margin.right]);
+
+        const y = d3.scaleBand()
+            .domain(sectorData.map(d => d.sector))
+            .range([0, height])
+            .padding(0.2);
+
+        svg.selectAll('.adoption-bar')
+            .data(sectorData)
+            .enter().append('rect')
+            .attr('class', 'adoption-bar')
+            .attr('x', 0)
+            .attr('y', d => y(d.sector))
+            .attr('width', 0)
+            .attr('height', y.bandwidth() / 2)
+            .attr('fill', '#2563eb')
+            .style('cursor', 'pointer')
+            .on('click', (_, d) => showSectorModal(d))
+            .transition()
+            .duration(600)
+            .attr('width', d => x(d.adoption));
+
+        svg.selectAll('.maturity-bar')
+            .data(sectorData)
+            .enter().append('rect')
+            .attr('class', 'maturity-bar')
+            .attr('x', 0)
+            .attr('y', d => y(d.sector) + y.bandwidth() / 2)
+            .attr('width', 0)
+            .attr('height', y.bandwidth() / 2)
+            .attr('fill', '#e7e247')
+            .style('cursor', 'pointer')
+            .on('click', (_, d) => showSectorModal(d))
+            .transition()
+            .duration(600)
+            .attr('width', d => x(d.maturity));
+
+        svg.selectAll('.sector-label')
+            .data(sectorData)
+            .enter().append('text')
+            .attr('x', -10)
+            .attr('y', d => y(d.sector) + y.bandwidth() / 2)
+            .attr('dy', '0.35em')
+            .attr('text-anchor', 'end')
+            .style('fill', '#ffffff')
+            .style('font-size', '14px')
+            .text(d => d.sector)
+            .on('click', (_, d) => showSectorModal(d));
+
+        svg.selectAll('.adoption-label')
+            .data(sectorData)
+            .enter().append('text')
+            .attr('x', d => x(d.adoption) + 5)
+            .attr('y', d => y(d.sector) + y.bandwidth() / 4)
+            .attr('dy', '0.35em')
+            .style('fill', '#ffffff')
+            .style('font-size', '12px')
+            .style('font-weight', 'bold')
+            .text(d => d.adoption + '%');
+
+        svg.selectAll('.maturity-label')
+            .data(sectorData)
+            .enter().append('text')
+            .attr('x', d => x(d.maturity) + 5)
+            .attr('y', d => y(d.sector) + 3 * y.bandwidth() / 4)
+            .attr('dy', '0.35em')
+            .style('fill', '#000000')
+            .style('font-size', '12px')
+            .style('font-weight', 'bold')
+            .text(d => d.maturity + '%');
+
+        svg.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(x).tickFormat(d => d + '%'))
+            .selectAll('text')
+            .style('fill', '#cccccc');
+    }
 }
 
 // CRITICAL: Complete Research-Based Impact Matrix
@@ -631,7 +691,7 @@ function createImpactMatrixChart() {
 
     const isMobileView = isMobile();
 
-    const margin = { top: 40, right: 30, bottom: 50, left: isMobileView ? 0 : 150 };
+    const margin = { top: 40, right: 30, bottom: isMobileView ? 0 : 50, left: isMobileView ? 0 : 150 };
     const containerWidth = container.node().getBoundingClientRect().width;
     const width = Math.max(containerWidth - margin.left - margin.right, 300);
     const height = isMobileView
@@ -669,13 +729,13 @@ function createImpactMatrixChart() {
                 svg.append('rect')
                     .attr('x', 0)
                     .attr('y', yOffset + j * 20)
-                    .attr('width', x(value))
+                    .attr('width', x(value -20))
                     .attr('height', 16)
                     .attr('fill', colors[j])
                     .attr('rx', 3);
 
                 svg.append('text')
-                    .attr('x', x(value) + 5)
+                    .attr('x', x(value - 15))
                     .attr('y', yOffset + j * 20 + 12)
                     .style('fill', '#ffffff')
                     .style('font-size', '11px')
