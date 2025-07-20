@@ -115,7 +115,6 @@ function initThreeJsBackground() {
         const particleMaterial = new THREE.PointsMaterial({
             size: 0.05,
             vertexColors: true,
-            transparent: true,
             opacity: 0.8
         });
 
@@ -126,7 +125,6 @@ function initThreeJsBackground() {
         const lineGeometry = new THREE.BufferGeometry();
         const lineMaterial = new THREE.LineBasicMaterial({
             color: 0x2563eb,
-            transparent: true,
             opacity: 0.2
         });
 
@@ -684,20 +682,31 @@ function createSectorChartInternal(container) {
 
 // CRITICAL: Complete Research-Based Impact Matrix
 function createImpactMatrixChart() {
-
     const container = d3.select('#impact-matrix-chart');
     if (container.empty()) return;
 
     container.selectAll('*').remove();
 
     const isMobileView = isMobile();
+    const dataMatrix = data.impact_matrix;
 
-    const margin = { top: 40, right: 30, bottom: isMobileView ? 0 : 50, left: isMobileView ? 0 : 150 };
-    const containerWidth = container.node().getBoundingClientRect().width;
-    const width = Math.max(containerWidth - margin.left - margin.right, 300);
-    const height = isMobileView
-        ? data.impact_matrix.impact_metrics.length * 150
-        : 400 - margin.top - margin.bottom;
+    if (isMobileView) {
+        renderMobileGroupedBars(container, dataMatrix);
+    } else {
+        renderDesktopHeatmap(container, dataMatrix);
+    }
+}
+
+function renderMobileGroupedBars(container, dataMatrix) {
+    const stages = dataMatrix.maturity_stages;
+    const metrics = dataMatrix.impact_metrics;
+    const colors = ['#2563eb', '#2563eb90', '#e7e24790', '#e7e247'];
+
+    const margin = { top: 30, right: 20, bottom: 30, left: 20 };
+    const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+    const barHeight = 16;
+    const groupHeight = metrics.length * (barHeight + 10) + 30;
+    const height = stages.length * groupHeight;
 
     const svg = container.append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -705,108 +714,115 @@ function createImpactMatrixChart() {
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const colors = ['#2563eb', '#2563eb90', '#e7e24790', '#e7e247'];
-    const stages = data.impact_matrix.maturity_stages;
-    const metrics = data.impact_matrix.impact_metrics;
+    const x = d3.scaleLinear().domain([0, 100]).range([0, width]);
 
-    if (isMobileView) {
-        // MOBILE-FRIENDLY STACKED BARS
-        metrics.forEach((metric, i) => {
-            const yOffset = i * 120;
-            svg.append('text')
+    metrics.forEach((metric, i) => {
+        const yOffset = i * 120;
+        svg.append('text')
+            .attr('x', 0)
+            .attr('y', yOffset - 15)
+            .text(metric.metric)
+            .style('fill', '#ffffff')
+            .style('font-size', '13px')
+            .style('font-weight', 'bold');
+
+        const x = d3.scaleLinear()
+            .domain([0, 100])
+            .range([0, width]);
+
+        stages.forEach((stage, j) => {
+            const value = metric[stage.toLowerCase()];
+            svg.append('rect')
                 .attr('x', 0)
-                .attr('y', yOffset - 15)
-                .text(metric.metric)
+                .attr('y', yOffset + j * 20)
+                .attr('width', x(value - 20))
+                .attr('height', 16)
+                .attr('fill', colors[j])
+                .attr('rx', 3);
+
+            svg.append('text')
+                .attr('x', x(value - 15))
+                .attr('y', yOffset + j * 20 + 12)
                 .style('fill', '#ffffff')
-                .style('font-size', '13px')
-                .style('font-weight', 'bold');
+                .style('font-size', '11px')
+                .text(`${stage}: ${value}%`);
+        });
+    });
+}
 
-            const x = d3.scaleLinear()
-                .domain([0, 100])
-                .range([0, width]);
+function renderDesktopHeatmap(container, dataMatrix) {
+    const stages = dataMatrix.maturity_stages;
+    const metrics = dataMatrix.impact_metrics;
+    const margin = { top: 40, right: 30, bottom: 50, left: 150 };
 
-            stages.forEach((stage, j) => {
-                const value = metric[stage.toLowerCase()];
-                svg.append('rect')
-                    .attr('x', 0)
-                    .attr('y', yOffset + j * 20)
-                    .attr('width', x(value - 20))
-                    .attr('height', 16)
-                    .attr('fill', colors[j])
-                    .attr('rx', 3);
+    const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+    const height = 400;
 
+    const svg = container.append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand().domain(stages).range([0, width]).padding(0.05);
+    const y = d3.scaleBand().domain(metrics.map(d => d.metric)).range([0, height]).padding(0.05);
+
+    // Heatmap color scale
+    const colorScale = d3.scaleLinear()
+        .domain([0, 100])
+        .range(['#2563eb', '#e7e247']); // from dark to blue
+
+    metrics.forEach(metric => {
+        stages.forEach(stage => {
+            const value = metric[stage.toLowerCase()];
+            svg.append('rect')
+                .attr('x', x(stage))
+                .attr('y', y(metric.metric))
+                .attr('width', x.bandwidth())
+                .attr('height', y.bandwidth())
+                .attr('fill', colorScale(value))
+                .attr('rx', 4)
+                .attr('opacity', 0.85);
+
+            if (x.bandwidth() > 30) {
                 svg.append('text')
-                    .attr('x', x(value - 15))
-                    .attr('y', yOffset + j * 20 + 12)
-                    .style('fill', '#ffffff')
-                    .style('font-size', '11px')
-                    .text(`${stage}: ${value}%`);
-            });
+                    .attr('x', x(stage) + x.bandwidth() / 2)
+                    .attr('y', y(metric.metric) + y.bandwidth() / 2)
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', '0.35em')
+                    .style('fill', '#fff')
+                    .style('font-size', '20px')
+                    .text(value + '%');
+            }
         });
-    } else {
-        // ORIGINAL DESKTOP MATRIX
-        const x = d3.scaleBand()
-            .domain(stages)
-            .range([0, width])
-            .padding(0.1);
+    });
 
-        const y = d3.scaleBand()
-            .domain(metrics.map(d => d.metric))
-            .range([0, height])
-            .padding(0.1);
+    // Y Axis (metrics)
+    svg.append('g')
+        .selectAll('text')
+        .data(metrics)
+        .enter()
+        .append('text')
+        .attr('x', -10)
+        .attr('y', d => y(d.metric) + y.bandwidth() / 2)
+        .attr('text-anchor', 'end')
+        .attr('dy', '0.35em')
+        .style('fill', '#ffffff')
+        .style('font-size', '13px')
+        .text(d => d.metric);
 
-        metrics.forEach((metric, metricIndex) => {
-            stages.forEach((stage, stageIndex) => {
-                const value = metric[stage.toLowerCase()];
-                const cellHeight = Math.max((value / 100) * y.bandwidth(), 5);
-
-                svg.append('rect')
-                    .attr('x', x(stage))
-                    .attr('y', y(metric.metric) + (y.bandwidth() - cellHeight))
-                    .attr('width', x.bandwidth())
-                    .attr('height', cellHeight)
-                    .attr('fill', colors[stageIndex])
-                    .attr('opacity', 0.8)
-                    .on('click', () => alert(`${metric.metric} - ${stage}: ${value}%`)); // tap-friendly
-
-                if (cellHeight > 20) {
-                    svg.append('text')
-                        .attr('x', x(stage) + x.bandwidth() / 2)
-                        .attr('y', y(metric.metric) + y.bandwidth() - cellHeight / 2)
-                        .attr('text-anchor', 'middle')
-                        .attr('dy', '0.35em')
-                        .style('fill', '#ffffff')
-                        .style('font-size', '11px')
-                        .style('font-weight', 'bold')
-                        .text(value + '%');
-                }
-            });
-        });
-
-        // Axes
-        svg.append('g')
-            .selectAll('text')
-            .data(metrics)
-            .enter().append('text')
-            .attr('x', -10)
-            .attr('y', d => y(d.metric) + y.bandwidth() / 2)
-            .attr('text-anchor', 'end')
-            .attr('dy', '0.35em')
-            .style('fill', '#ffffff')
-            .style('font-size', '13px')
-            .text(d => d.metric);
-
-        svg.append('g')
-            .attr('transform', `translate(0, ${height + 10})`)
-            .selectAll('text')
-            .data(stages)
-            .enter().append('text')
-            .attr('x', d => x(d) + x.bandwidth() / 2)
-            .attr('text-anchor', 'middle')
-            .style('fill', '#ffffff')
-            .style('font-size', '13px')
-            .text(d => d);
-    }
+    // X Axis (stages)
+    svg.append('g')
+        .attr('transform', `translate(0, ${height + 5})`)
+        .selectAll('text')
+        .data(stages)
+        .enter()
+        .append('text')
+        .attr('x', d => x(d) + x.bandwidth() / 2)
+        .attr('text-anchor', 'middle')
+        .style('fill', '#ffffff')
+        .style('font-size', '13px')
+        .text(d => d);
 }
 
 // Initialize interactive elements
@@ -980,11 +996,12 @@ function initShareButton() {
 
     shareBtn.addEventListener('click', function () {
         console.log('Share button clicked');
-        const shareText = `AI Maturity Gap Alert: 78% adoption vs only 5% mature implementations. 
-        The 24-month window to join the 27% AI Achievers is closing. 
-        Key insight: 95% satisfaction at highest AI maturity levels. 
-        Read more: ${window.location.href}
-        #AITransformation #DigitalLeadership `;
+        const shareText = `AI Maturity Gap Alert: 78% adoption vs only 5% mature implementations. The 24-month window to join the 27% AI Achievers is closing. 
+
+Key insight: 95% satisfaction at highest AI maturity levels. 
+        
+Read more: ${window.location.href}
+#AITransformation #DigitalLeadership #AIMaturityGap`;
 
         // Copy to clipboard
         navigator.clipboard.writeText(shareText).then(function () {

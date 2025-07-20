@@ -27,6 +27,10 @@ a {
   text-decoration: none;
 }
 
+b {
+  color: #e7e247;
+}
+
 /* Background Canvas */
 #background-canvas {
   position: fixed;
@@ -35,7 +39,7 @@ a {
   width: 100%;
   height: 100%;
   z-index: -1;
-  opacity: 0.4;
+  opacity: 0.25;
 }
 
 /* Navigation */
@@ -44,7 +48,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(37, 99, 235, 0.1);
   backdrop-filter: blur(10px);
   z-index: 1000;
   border-bottom: 1px solid rgba(37, 99, 235, 0.2);
@@ -106,6 +110,8 @@ a {
 /* Share button */
 .share-btn {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  backdrop-filter: blur(10px);
+  opacity: 0.8;
   color: #ffffff;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -196,7 +202,7 @@ main {
     transform: translateX(-50%);
     padding: 0.8rem 1.2rem;
     border-radius: 0.5rem;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 200;
     font-size: 0.75rem;
     white-space: normal;
     color: white;
@@ -216,7 +222,7 @@ main {
 .neon .tooltip {
   background: rgba(20, 20, 40, 0.9);
   box-shadow: 0 0 20px #e7e24720;
-  border: 1px solid #e7e247;
+  border: 1px solid #2563eb20;
 }
 
 .neon-glow {
@@ -371,7 +377,7 @@ main {
 .maturity-stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 3rem;
+  margin: 2rem;
   flex-wrap: wrap;
   gap: 2rem;
 }
@@ -384,26 +390,29 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   min-width: 200px;
 }
 
 .maturity-item:first-child .maturity-percent {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   color: #ccc;
   margin-bottom: 0.5rem;
 }
 
 .maturity-item:nth-child(2) .maturity-percent {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   color: #2563eb;
   margin-bottom: 0.5rem;
 }
 
 .maturity-item:last-child .maturity-percent {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   color: #e7e247;
   margin-bottom: 0.5rem;
 }
@@ -420,7 +429,7 @@ main {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
 }
 
@@ -632,10 +641,7 @@ main {
 }
 
 .barrier-percentage {
-  background: linear-gradient(135deg, #2563eb, #e7e247);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
   font-size: 1.5rem;
   font-weight: 800;
 }
@@ -732,7 +738,7 @@ main {
 
 .enabler-badge.foundation {
   background: rgba(37, 99, 235, 0.2);
-  color: #60a5fa;
+  color: #2563eb;
   border: 1px solid rgba(37, 99, 235, 0.3);
 }
 
@@ -757,7 +763,7 @@ main {
 
 .enabler-source {
   font-size: 0.8rem;
-  color: #999999;
+  color: #cccccc;
   font-style: italic;
 }
 
@@ -851,7 +857,7 @@ main {
 
 .stat-source {
   font-size: 0.9rem;
-  color: #999999;
+  color: #cccccc;
   font-style: italic;
 }
 
@@ -1031,6 +1037,8 @@ main {
 
   .section-title {
     font-size: 2.5rem;
+    margin-top: 1rem;
+  
   }
 
   .timeline-content-wrapper {
