@@ -418,17 +418,17 @@ function createMaturityChart() {
 
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-            const margin = { top: 20, right: 120, bottom: 30, left: 120 };
+            const margin = { top: 0, right: 120, bottom: 0, left: 120 };
             const containerWidth = container.node().getBoundingClientRect().width;
             const width = Math.max(containerWidth - margin.left - margin.right, 300);
-            const height = 300;
+            const height = 250;
             const radius = Math.min(width, height) / 2 - 20;
 
             const svg = container.append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', `translate(${width / 2},${height / 2})`);
+                .attr('transform', isMobile() ? `translate(${(width / 2) - 10},${height / 2})` : `translate(${(width / 2) + radius},${height / 2})`);
 
             const pie = d3.pie()
                 .value(d => d.percentage)
@@ -623,9 +623,6 @@ function createSectorChartInternal(container) {
 
 // CRITICAL: Complete Research-Based Impact Matrix
 function createImpactMatrixChart() {
-    function isMobile() {
-        return window.innerWidth < 600;
-    }
 
     const container = d3.select('#impact-matrix-chart');
     if (container.empty()) return;
@@ -922,7 +919,11 @@ function initShareButton() {
 
     shareBtn.addEventListener('click', function () {
         console.log('Share button clicked');
-        const shareText = `AI Maturity Gap Alert: 78% adoption vs only 5% mature implementations. The 24-month window to join the 27% AI Achievers is closing. Key insight: 95% satisfaction at highest AI maturity levels. #AITransformation #DigitalLeadership ${window.location.href}`;
+        const shareText = `AI Maturity Gap Alert: 78% adoption vs only 5% mature implementations. 
+        The 24-month window to join the 27% AI Achievers is closing. 
+        Key insight: 95% satisfaction at highest AI maturity levels. 
+        Read more: ${window.location.href}
+        #AITransformation #DigitalLeadership `;
 
         // Copy to clipboard
         navigator.clipboard.writeText(shareText).then(function () {
@@ -1073,6 +1074,10 @@ function scrollToSection(sectionId) {
     } else {
         console.error('Section not found:', sectionId);
     }
+}
+
+function isMobile() {
+    return window.innerWidth < 600;
 }
 
 // Handle window resize for charts and Three.js
