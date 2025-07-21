@@ -21,9 +21,9 @@
                 <li><a href="#hero" data-section="hero">Home</a></li>
                 <li><a href="#growth" data-section="growth">Growth of AI</a></li>
                 <li><a href="#maturity" data-section="maturity">Maturity in Adoption</a></li>
+                <li><a href="#impact-matrix" data-section="impact-matrix">Impact Matrix</a></li>
                 <li><a href="#where-stall" data-section="where-stall">Barriers</a></li>
                 <li><a href="#enablers" data-section="enablers">Enablers</a></li>
-                <li><a href="#impact-matrix" data-section="impact-matrix">Impact Matrix</a></li>
                 <li><a href="#conclusion" data-section="conclusion">Forward Look</a></li>
             </ul>
             <button id="share-insights-btn" class="share-btn">
@@ -44,9 +44,9 @@
                     <h1 class="hero-title">Why <span class="hero-stat" data-target="78">0</span>% Are Doing AI But Only
                         <span class="hero-stat" data-target="5">0</span>% Are Winning?
                     </h1>
-                    <p class="hero-subtitle">The Strategic Divide in Enterprise AI Adoption</p>
+                    <p class="hero-subtitle">AI is everywhere, but excellence is still rare.</p>
                     <button class="cta-button" onclick="scrollToSection('growth')">
-                        START PRESENTATION
+                        Let's Find Out
                         <span class="cta-arrow">→</span>
                     </button>
                 </div>
@@ -148,8 +148,7 @@
         <!-- Sector Analysis -->
         <section id="sectors" class="section section-snap">
             <div class="container">
-                <h2 class="section-title tooltip-trigger neon"><span onclick="toggleTooltip(this)">Sector Adoption vs
-                        Maturity Gap</span>
+                <h2 class="section-title tooltip-trigger neon"><span onclick="toggleTooltip(this)">Breaking Down Adoption By Sector</span>
                     <svg class="tooltip-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         fill="currentColor">
                         <path
@@ -196,7 +195,7 @@
                     </svg>
                     <span class="tooltip neon-tip" onclick="toggleTooltip(this)">
                         Organizations have approximately 24 months to establish AI competitive
-                        positioning before market dynamics create irreversible disadvantages[4][5]. This timeline
+                        positioning before market dynamics create irreversible disadvantages. This timeline
                         reflects several converging
                         factors:
                         <ul style="list-style: none; text-align: left; margin-left: 0; padding-left: 0;">
@@ -238,6 +237,58 @@
                             <li>Talent Scarcity (33%)</li>
                             <li>Strategic Planning Gaps</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Complete Research-Based Impact Matrix -->
+        <section id="impact-matrix" class="section section-snap">
+            <div class="container">
+                <h2 class="section-title tooltip-trigger neon"><span onclick="toggleTooltip(this)">How Leaders Fare on
+                        Key Metrics vs Laggards</span>
+                    <svg class="tooltip-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm1 13h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                    </svg>
+                    <span class="tooltip neon-tip" onclick="toggleTooltip(this)">
+                        Protiviti correlates maturity to financial outcomes: at Stage 5 (Transformation) 95% report high
+                        satisfaction and 75% say ROI exceeds expectations; at Stages 1-2 fewer than 30% exceed ROI.
+                        The Protiviti AI Pulse Survey provides additional granularity, identifying five stages of AI
+                        maturity:
+                        <div style="text-align: center;">
+                            <ul style="list-style: none; display: inline-block; text-align: left;">
+                                <li>Stage 1 - Initial (19%): Limited understanding, no strategic initiatives</li>
+                                <li>Stage 2 - Experimentation (32%): Small-scale pilots and proof-of-concepts</li>
+                                <li>Stage 3 - Defined (21%): AI integrated into existing business processes</li>
+                                <li>Stage 4 - Optimization (20%): Enhanced AI systems with continuous improvement</li>
+                                <li>Stage 5 - Transformation (8%): AI drives significant business transformation</li>
+                            </ul>
+                            <span class="neon-glow"></span>
+                        </div>
+                    </span>
+                </h2>
+                <div class="matrix-container">
+                    <div id="impact-matrix-chart"></div>
+                    <div class="matrix-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #2563eb;"></span>
+                            <span>Experimenting Stage</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #2563eb50;"></span>
+                            <span>Developing Stage</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #e7e24750;"></span>
+                            <span>Scaling Stage</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #e7e247;"></span>
+                            <span>Leading Stage</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -461,57 +512,6 @@
             </div>
         </section>
 
-        <!-- Complete Research-Based Impact Matrix -->
-        <section id="impact-matrix" class="section section-snap">
-            <div class="container">
-                <h2 class="section-title tooltip-trigger neon"><span onclick="toggleTooltip(this)">How Leaders Fare on
-                        Key Metrics vs Laggards</span>
-                    <svg class="tooltip-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm1 13h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                    </svg>
-                    <span class="tooltip neon-tip" onclick="toggleTooltip(this)">
-                        Protiviti correlates maturity to financial outcomes: at Stage 5 (Transformation) 95% report high
-                        satisfaction and 75% say ROI exceeds expectations; at Stages 1-2 fewer than 30% exceed ROI.
-                        The Protiviti AI Pulse Survey provides additional granularity, identifying five stages of AI
-                        maturity:
-                        <div style="text-align: center;">
-                            <ul style="list-style: none; display: inline-block; text-align: left;">
-                                <li>Stage 1 - Initial (19%): Limited understanding, no strategic initiatives</li>
-                                <li>Stage 2 - Experimentation (32%): Small-scale pilots and proof-of-concepts</li>
-                                <li>Stage 3 - Defined (21%): AI integrated into existing business processes</li>
-                                <li>Stage 4 - Optimization (20%): Enhanced AI systems with continuous improvement</li>
-                                <li>Stage 5 - Transformation (8%): AI drives significant business transformation</li>
-                            </ul>
-                            <span class="neon-glow"></span>
-                        </div>
-                    </span>
-                </h2>
-                <div class="matrix-container">
-                    <div id="impact-matrix-chart"></div>
-                    <div class="matrix-legend">
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #2563eb;"></span>
-                            <span>Experimenting Stage</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #2563eb50;"></span>
-                            <span>Developing Stage</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #e7e24750;"></span>
-                            <span>Scaling Stage</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #e7e247;"></span>
-                            <span>Leading Stage</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Conclusion -->
         <section id="conclusion" class="section section-snap conclusion-section">
             <div class="container">
@@ -525,19 +525,19 @@
 
                 <div class="key-statistics">
                     <div class="stat-card">
-                        <div class="stat-value">$109.1B</div>
-                        <div class="stat-description">US AI Investment in 2024</div>
+                        <div class="stat-value">83%</div>
+                        <div class="stat-description">Achievers already have CEO/Board sponsorship vs. 56% of Experimenters</div>
+                        <div class="stat-source">Accenture Art of AI Maturity</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">61%</div>
+                        <div class="stat-description">Enterprises have already redirected up to 10% of their total tech budget into GenAI</div>
+                        <div class="stat-source">KPMG AI Advisory</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">280x</div>
+                        <div class="stat-description">Inference costs for GPT-3.5-level performance have fallen in 18 months</div>
                         <div class="stat-source">Stanford AI Index 2025</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">95%</div>
-                        <div class="stat-description">High Satisfaction at Highest AI Maturity</div>
-                        <div class="stat-source">Protiviti AI Pulse Survey 2024</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">75%</div>
-                        <div class="stat-description">Exceed ROI Expectations at Highest Maturity</div>
-                        <div class="stat-source">Protiviti AI Pulse Survey 2024</div>
                     </div>
                 </div>
             </div>

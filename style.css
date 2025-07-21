@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
 /* CRITICAL: Snap scroll restoration */
 html {
   scroll-behavior: smooth;
@@ -203,7 +212,7 @@ main {
     padding: 0.8rem 1.2rem;
     border-radius: 0.5rem;
     font-weight: 200;
-    font-size: 0.75rem;
+    font-size: 1rem;
     white-space: normal;
     color: white;
     opacity: 0;
@@ -279,6 +288,8 @@ main {
 /* CTA Button */
 .cta-button {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  opacity: 0.8;
+  backdrop-filter: blur(10px);
   color: #ffffff;
   border: none;
   padding: 1rem 2rem;

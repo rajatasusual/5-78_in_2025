@@ -576,7 +576,7 @@ function createSectorChartInternal(container) {
             .attr('y', d => y(d.maturity) - 5)
             .attr('text-anchor', 'middle')
             .style('font-size', '11px')
-            .style('fill', '#000000')
+            .style('fill', '#ffffff')
             .text(d => d.maturity + '%');
 
         // X Axis with rotated labels
@@ -667,7 +667,7 @@ function createSectorChartInternal(container) {
             .attr('x', d => x(d.maturity) + 5)
             .attr('y', d => y(d.sector) + 3 * y.bandwidth() / 4)
             .attr('dy', '0.35em')
-            .style('fill', '#000000')
+            .style('fill', '#ffffff')
             .style('font-size', '12px')
             .style('font-weight', 'bold')
             .text(d => d.maturity + '%');
